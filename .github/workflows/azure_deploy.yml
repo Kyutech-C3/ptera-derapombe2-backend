@@ -38,3 +38,10 @@ jobs:
         app-name: 'sign-gress-server'
         publish-profile: ${{ secrets.AZURE_WEBAPP_PUBLISH_PROFILE }}
         images: 'signgress.azurecr.io/sign-gress-server:${{ github.sha }}'
+
+    - uses: sarisia/actions-status-discord@v1
+      if: always()
+      env:
+        DISCORD_WEBHOOK: ${{ secrets.DISCORD_WEBHOOK }}
+      with:
+        status: ${{ job.status }}
