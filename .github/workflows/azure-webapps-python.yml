@@ -24,15 +24,17 @@ jobs:
         with:
           python-version: ${{ env.PYTHON_VERSION }}
 
+      - name: Switch Pipfile to requirements.txt
+        run: pipenv lock -r > requirements.txt
+
       - name: Install dependencies
         run: |
           pip install --upgrade pip
-          pip install pipenv
-          pipenv install
+          pip install
 
 #      - name: Run tests
 #        run: pipenv run pytest
-        
+
       - name: Upload artifact for deployment jobs
         uses: actions/upload-artifact@v3
         with:
