@@ -1,6 +1,4 @@
 {
-    "files.autoSave": "afterDelay",
-    "files.autoSaveDelay": 1000,
     // ファイルの終了時に行末のスペース削除
     "files.trimTrailingWhitespace": true,
     "files.insertFinalNewline": true,
