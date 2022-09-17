@@ -11,13 +11,13 @@
         "editor.tabSize": 4
     },
     "python.pipenvPath": "/usr/local/bin/pipenv",
-    "python.linting.pylintEnabled": true,
+    "python.linting.pylintEnabled": false,
     "python.linting.mypyEnabled": true,
     "python.linting.flake8Enabled": true,
     "python.linting.flake8Args": [
-        "--max-line-length=120",
+        "--max-line-length=150",
         "--max-complexity","20",
-        "--ignore=E501,E302"
+        "--ignore=E302"
     ],
     "python.formatting.provider": "autopep8",
     "python.formatting.autopep8Args": [
@@ -38,6 +38,8 @@
         "azurecr",
         "envkey",
         "gress",
+        "ondelete",
+        "onupdate",
         "pipenv",
         "pytest",
         "signgress",
