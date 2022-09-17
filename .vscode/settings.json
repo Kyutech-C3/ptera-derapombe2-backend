@@ -35,6 +35,13 @@
     "python.testing.unittestEnabled": true,
     "cSpell.words": [
         "autoflush",
-        "sqltypes"
+        "azurecr",
+        "envkey",
+        "gress",
+        "pipenv",
+        "pytest",
+        "signgress",
+        "sqltypes",
+        "webapps"
     ]
 }

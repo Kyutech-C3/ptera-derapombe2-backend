@@ -1,0 +1,40 @@
+name: Linux Container deploy Workflow
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v2
+
+    - name: Make env file
+      uses: SpicyPizza/create-envfile@v1.3
+      with:
+        some_other_variable: foobar
+        directory: .
+        file_name: .env
+        fail_on_empty: false
+        envkey_POSTGRES_USER: "pigeons_house"
+        envkey_POSTGRES_PASSWORD: ${{ secrets.POSTGRES_PASSWORD }}
+        envkey_POSTGRES_DB: ${{ secrets.POSTGRES_DB }}
+        envkey_POSTGRES_HOST: ${{ secrets.POSTGRES_HOST }}
+
+    - uses: azure/docker-login@v1
+      with:
+        login-server: signgress.azurecr.io
+        username: ${{ secrets.REGISTRY_USERNAME }}
+        password: ${{ secrets.REGISTRY_PASSWORD }}
+
+    - run: |
+        docker build . --platform linux/amd64 -t signgress.azurecr.io/sign-gress-server:${{ github.sha }}
+        docker push signgress.azurecr.io/sign-gress-server:${{ github.sha }}
+    - uses: azure/webapps-deploy@v2
+      with:
+        app-name: 'sign-gress-server'
+        publish-profile: ${{ secrets.AZURE_WEBAPP_PUBLISH_PROFILE }}
+        images: 'signgress.azurecr.io/sign-gress-server:${{ github.sha }}'
