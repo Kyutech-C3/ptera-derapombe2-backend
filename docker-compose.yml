@@ -1,7 +1,7 @@
 version: '3'
 services:
   db:
-    container_name: ichthyo_db
+    container_name: sign_gress_db
     hostname: db
     image: postgres:12
     volumes:
@@ -12,7 +12,7 @@ services:
       - '5432:5432'
 
   server:
-    container_name: ichthyo_server
+    container_name: sign_gress_server
     hostname: server
     build:
       context: .
@@ -27,7 +27,7 @@ services:
       - db
 
   adminer:
-    container_name: ichthyo_adminer
+    container_name: sign_gress_adminer
     hostname: adminer
     image: adminer:4.7.5
     restart: always
