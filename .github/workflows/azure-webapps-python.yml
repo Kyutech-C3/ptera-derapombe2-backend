@@ -34,7 +34,7 @@ jobs:
 #        run: pipenv run pytest
 
       - name: Switch Pipfile to requirements.txt
-        run: pipenv lock -r > requirements.txt
+        run: pipenv run pip freeze > requirements.txt
 
       - name: Upload artifact for deployment jobs
         uses: actions/upload-artifact@v3
