@@ -36,12 +36,23 @@ jobs:
       - name: Switch Pipfile to requirements.txt
         run: pipenv run pip freeze > requirements.txt
 
+      - name: Create and start virtual environment
+        run: |
+          python -m venv venv
+          source venv/bin/activate
+      
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+        
+      # Optional: Add step to run tests here (PyTest, Django test suites, etc.)
+      
       - name: Upload artifact for deployment jobs
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v2
         with:
           name: python-app
-          path: .
-
+          path: |
+            . 
+            !venv/
   deploy:
     permissions:
       contents: none
