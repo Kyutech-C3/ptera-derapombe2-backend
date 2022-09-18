@@ -19,7 +19,7 @@ class Color(str, enum.Enum):
 @dataclasses.dataclass
 class User(Base):
     __tablename__ = 'users'
-    id = Column(String, primary_key=True)
+    id = Column(String, default=generate_uuid, primary_key=True)
     name = Column(String, unique=False, nullable=False)
     group = Column(Enum(Color), nullable=False)
     exp_point = Column(Integer, default=0)
@@ -43,7 +43,7 @@ class Sign(Base):
 
 @dataclasses.dataclass
 class SignStatus(Base):
-    __tablename__ = 'signs'
+    __tablename__ = 'sign_statuses'
     sign_id = Column(String, ForeignKey('signs.id', onupdate='CASCADE', ondelete='CASCADE'), primary_key=True)
     user_id = Column(String, ForeignKey('users.id', onupdate='CASCADE', ondelete='CASCADE'), nullable=False)
     hit_point = Column(Integer, nullable=False)
