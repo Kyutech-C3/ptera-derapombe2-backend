@@ -12,8 +12,9 @@ def get_users(db: Session) -> list[User]:
 	users = db.query(User).all()
 	return users
 
-def create_user(db: Session, name: str, group: ColorType, avatar_number: int) -> User:
+def create_user(db: Session, user_id: str, name: str, group: ColorType, avatar_number: int) -> User:
 	user = User(
+		id=user_id,
 		name=name,
 		group=group,
 		avatar_number=avatar_number

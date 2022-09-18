@@ -6,16 +6,32 @@ from strawberry.fastapi import GraphQLRouter
 from strawberry.types import Info
 from fastapi import HTTPException, Depends
 from fastapi.security import HTTPBearer, HTTPAuthorizationCredentials
+import firebase_admin
+from firebase_admin import credentials, auth
+
+cred = credentials.Certificate('cred.json')
+firebase_admin.initialize_app(cred)
 
 security = HTTPBearer()
 
-def auth(credentials: HTTPAuthorizationCredentials = Depends(security)):
+def verify_token(credentials: HTTPAuthorizationCredentials = Depends(security)):
 	if credentials.scheme != 'Bearer':
 		raise HTTPException(status_code=403)
-	# ここでtokenを確認し，firebaseからUserIdを受け取る
-	# そのUserIdをcurrent_user_idとして渡す
+	try:
+		user_info = auth.verify_id_token(credentials.credentials)
+	except Exception:
+		raise HTTPException(
+			status_code=401
+		)
+
+	user_id = user_info.get('user_id')
+	if user_id is None:
+		raise HTTPException(
+			status_code=400
+		)
+
 	return {
-		"current_user_id": credentials.credentials
+		"current_user_id": user_id
 	}
 
 def get_user(user_id: str) -> UserType:
@@ -25,12 +41,14 @@ def get_user(user_id: str) -> UserType:
 
 def get_me(info: Info) -> UserType:
 	db = next(get_db())
-	me = cu.get_user_by_id(db, info.context['current_user_id'])
+	user_id = info.context['current_user_id']
+	me = cu.get_user_by_id(db, user_id)
 	return me
 
-def add_user(user_input: AddUserInput) -> UserType:
+def add_user(user_input: AddUserInput, info: Info) -> UserType:
 	db = next(get_db())
-	user = cu.create_user(db, **user_input.__dict__)
+	user_id = info.context['current_user_id']
+	user = cu.create_user(db, user_id, **user_input.__dict__)
 	return UserType.from_instance(user)
 
 @strawberry.type
@@ -44,4 +62,4 @@ class UserMutation:
 
 user_schema = strawberry.Schema(query=UserQuery, mutation=UserMutation)
 
-user_router = GraphQLRouter(user_schema, context_getter=auth)
+user_router = GraphQLRouter(user_schema, context_getter=verify_token)
