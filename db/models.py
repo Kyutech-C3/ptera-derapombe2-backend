@@ -120,6 +120,6 @@ class BaseSign(Base):
 @dataclasses.dataclass
 class BelongSign(Base):
     __tablename__ = 'belong_signs'
-    sign_id = Column(String, ForeignKey('signs.id', onupdate='CASCADE', ondelete='CASCADE'))
-    base_sign_id = Column(String, ForeignKey('base_signs.id', onupdate='CASCADE', ondelete='CASCADE'))
+    sign_id = Column(String, ForeignKey('signs.id', onupdate='CASCADE', ondelete='CASCADE'), primary_key=True)
+    base_sign_id = Column(String, ForeignKey('base_signs.id', onupdate='CASCADE', ondelete='CASCADE'), primary_key=True)
     created_at = Column(DateTime, default=datetime.now)
