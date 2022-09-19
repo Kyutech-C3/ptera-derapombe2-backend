@@ -24,30 +24,10 @@ jobs:
         envkey_POSTGRES_DB: ${{ secrets.POSTGRES_DB }}
         envkey_POSTGRES_HOST: ${{ secrets.POSTGRES_HOST }}
 
-    - name: Create cred.json
-      run: |
-        mv base_cred.json cred.json
-
-    - name: Edit cred.json
-      uses: microsoft/variable-substitution@v1
-      with:
-        files: 'cred.json'
+    - name: copy google-service
       env:
-        type: ${{ secrets.CRED_JSON_TYPE }}
-        project_id: ${{ secrets.CRED_JSON_PROJECT_ID }}
-        private_key_id: ${{ secrets.CRED_JSON_PRIVATE_KEY_ID }}
-        private_key: ${{ secrets.CRED_JSON_PRIVATE_KEY }}
-        client_email: ${{ secrets.CRED_JSON_CLIENT_EMAIL }}
-        client_id: ${{ secrets.CRED_JSON_CLIENT_ID }}
-        auth_uri: ${{ secrets.CRED_JSON_AUTH_URI }}
-        token_uri: ${{ secrets.CRED_JSON_TOKEN_URI }}
-        auth_provider_x509_cert_url: ${{ secrets.CRED_JSON_AUTH_PROVIDER }}
-        client_x509_cert_url: ${{ secrets.CRED_JSON_CLIENT }}
-
-    - name: check file
-      run: |
-        cat cred.json
-        false
+        GOOGLE_SERVICE: ${{ secrets.CRED_JSON_BASE64 }}
+      run: echo $GOOGLE_SERVICE | base64 --decode --ignore-garbage > cred.json
 
     - uses: azure/docker-login@v1
       with:
