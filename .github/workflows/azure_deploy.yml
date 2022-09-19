@@ -44,6 +44,11 @@ jobs:
         auth_provider_x509_cert_url: ${{ secrets.CRED_JSON_AUTH_PROVIDER }}
         client_x509_cert_url: ${{ secrets.CRED_JSON_CLIENT }}
 
+    - name: check file
+      run: |
+        cat cred.json
+        false
+
     - uses: azure/docker-login@v1
       with:
         login-server: signgress.azurecr.io
