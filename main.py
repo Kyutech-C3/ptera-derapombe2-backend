@@ -20,4 +20,4 @@ app.add_middleware(
 async def health():
     return {'health': 'OK'}
 
-app.include_router(graphql_router)
+app.include_router(graphql_router, prefix='/graphql')
