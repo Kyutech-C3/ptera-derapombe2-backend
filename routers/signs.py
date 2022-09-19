@@ -101,7 +101,7 @@ def exhume_sign(sign_id: str) -> list[ExhumeResult]:
 		)
 	]
 
-def attack_sign(sign_id: str) -> AttackResult:
+def attack_sign(sign_id: str, having_item_id: str) -> AttackResult:
 	return AttackResult(
 		items=[
 			ItemType(
