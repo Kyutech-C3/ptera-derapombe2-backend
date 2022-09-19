@@ -1,7 +1,7 @@
 import strawberry
 from strawberry.fastapi import GraphQLRouter
 from schemas.users import UserType
-import users as ru
+from routers import users as ru
 
 @strawberry.type
 class Query:
