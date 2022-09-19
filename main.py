@@ -2,7 +2,7 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from db.database import engine
 from db.models import Base
-from routers.main import base_router
+from routers.main import graphql_router
 
 Base.metadata.create_all(bind=engine)
 
@@ -20,4 +20,4 @@ app.add_middleware(
 async def health():
     return {'health': 'OK'}
 
-app.include_router(base_router)
+app.include_router(graphql_router)

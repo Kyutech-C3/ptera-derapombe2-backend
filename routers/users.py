@@ -1,9 +1,7 @@
-import strawberry
 import cruds.users as cu
 from db.database import get_db
 from routers.utils import verify_token
 from schemas.users import AddUserInput, UserType
-from strawberry.fastapi import GraphQLRouter
 from strawberry.types import Info
 
 def get_user(user_id: str) -> UserType:
@@ -22,16 +20,3 @@ def add_user(user_input: AddUserInput, info: Info) -> UserType:
 	user_id = verify_token(info)
 	user = cu.create_user(db, user_id, **user_input.__dict__)
 	return UserType.from_instance(user)
-
-@strawberry.type
-class UserQuery:
-	user: UserType = strawberry.field(resolver=get_user)
-	me: UserType = strawberry.field(resolver=get_me)
-
-@strawberry.type
-class UserMutation:
-	user_add: UserType = strawberry.field(resolver=add_user)
-
-user_schema = strawberry.Schema(query=UserQuery, mutation=UserMutation)
-
-user_router = GraphQLRouter(user_schema)
