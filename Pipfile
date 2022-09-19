@@ -20,6 +20,7 @@ firebase-admin = "*"
 scikit-learn = "*"
 strawberry-graphql = {extras = ["fastapi"], version = "*"}
 tensorflow = "*"
+strawberry-sqlalchemy-mapper = "*"
 
 [dev-packages]
 mypy = "*"
