@@ -24,6 +24,10 @@ jobs:
         envkey_POSTGRES_DB: ${{ secrets.POSTGRES_DB }}
         envkey_POSTGRES_HOST: ${{ secrets.POSTGRES_HOST }}
 
+    - name: Create cred.json
+      run: |
+        echo ${{ secrets.CREDENTIAL_JSON }} > cred.json
+
     - uses: azure/docker-login@v1
       with:
         login-server: signgress.azurecr.io
