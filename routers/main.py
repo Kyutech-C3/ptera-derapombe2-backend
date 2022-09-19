@@ -1,16 +1,16 @@
 import strawberry
 from strawberry.fastapi import GraphQLRouter
 from schemas.users import UserType
-from .users import get_user, get_me, add_user
+import users as ru
 
 @strawberry.type
 class Query:
-	user: UserType = strawberry.field(resolver=get_user)
-	me: UserType = strawberry.field(resolver=get_me)
+	user: UserType = strawberry.field(resolver=ru.get_user)
+	me: UserType = strawberry.field(resolver=ru.get_me)
 
 @strawberry.type
 class Mutation:
-	user_add: UserType = strawberry.field(resolver=add_user)
+	add_user: UserType = strawberry.field(resolver=ru.add_user)
 
 schema = strawberry.Schema(query=Query, mutation=Mutation)
 
