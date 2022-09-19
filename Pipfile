@@ -21,6 +21,7 @@ scikit-learn = "*"
 strawberry-graphql = {extras = ["fastapi"], version = "*"}
 tensorflow = "*"
 strawberry-sqlalchemy-mapper = "*"
+websockets = "*"
 
 [dev-packages]
 mypy = "*"

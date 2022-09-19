@@ -2,7 +2,8 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from db.database import engine
 from db.models import Base
-from routers.main import graphql_router
+from routers.graphql import graphql_router
+from routers.websocket import websocket_router
 
 Base.metadata.create_all(bind=engine)
 
@@ -21,3 +22,4 @@ async def health():
     return {'health': 'OK'}
 
 app.include_router(graphql_router, prefix='/graphql')
+app.include_router(websocket_router, prefix='/ws')
