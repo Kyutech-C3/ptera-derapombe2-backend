@@ -1,9 +1,7 @@
-from typing import Any
 import strawberry
 from datetime import datetime
-from db.models import Color, User
-
-ColorType: Any = strawberry.enum(Color, name="Color")
+from db.models import User
+from .general import ColorType
 
 @strawberry.type(name="User")
 class UserType:
@@ -21,9 +19,3 @@ class UserType:
 		data = instance.__dict__
 		del data['_sa_instance_state']
 		return cls(**data)
-
-@strawberry.input
-class AddUserInput:
-	name: str
-	group: ColorType
-	avatar_number: int
