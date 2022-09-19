@@ -110,3 +110,16 @@ class UsingItem(Base):
     item_id = Column(String, ForeignKey('items.id', onupdate='CASCADE', ondelete='CASCADE'))
     sign_id = Column(String, ForeignKey('signs.id', onupdate='CASCADE', ondelete='CASCADE'))
     created_at = Column(DateTime, default=datetime.now)
+
+@dataclasses.dataclass
+class BaseSign(Base):
+    __tablename__ = 'base_signs'
+    id = Column(String, default=generate_uuid, primary_key=True)
+    type = Column(Integer)
+
+@dataclasses.dataclass
+class BelongSign(Base):
+    __tablename__ = 'belong_signs'
+    sign_id = Column(String, ForeignKey('signs.id', onupdate='CASCADE', ondelete='CASCADE'))
+    base_sign_id = Column(String, ForeignKey('base_signs.id', onupdate='CASCADE', ondelete='CASCADE'))
+    created_at = Column(DateTime, default=datetime.now)
