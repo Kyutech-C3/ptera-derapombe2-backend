@@ -14,9 +14,10 @@ from routers import (
 
 @strawberry.type
 class Query:
-	power_ratio: PowerRatio = strawberry.field(resolver=rp.get_power_ratio)
 	user: UserType = strawberry.field(resolver=ru.get_user)
 	me: UserType = strawberry.field(resolver=ru.get_me)
+	# mock
+	power_ratio: PowerRatio = strawberry.field(resolver=rp.get_power_ratio)
 	sign_info: SignInfo = strawberry.field(resolver=rs.get_sign_info)
 	sign_status: SignStatusType = strawberry.field(resolver=rs.get_sign_status)
 	my_items: list[ItemType] = strawberry.field(resolver=ri.get_my_items)
@@ -25,6 +26,7 @@ class Query:
 @strawberry.type
 class Mutation:
 	add_user: UserType = strawberry.field(resolver=ru.add_user)
+	# mock
 	update_user: UserType = strawberry.field(resolver=ru.update_user)
 	add_item: list[ItemType] = strawberry.field(resolver=ri.add_item)
 	change_item: list[ItemType] = strawberry.field(resolver=ri.change_item)
