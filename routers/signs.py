@@ -5,9 +5,9 @@ from schemas.items import ItemResult, ItemType
 from schemas.predict import PredictResult, SuggestResult
 from schemas.signs import AttackResult, ExhumeResult, Gallery, SignInfo, SignStatusType, SignType
 
-def get_sign_info() -> SignInfo:
+def get_sign_info(sign_id: str) -> SignInfo:
 	return SignInfo(
-		id='hoge',
+		id=sign_id,
 		base_sign_types=[1],
 		longitude=130.671892,
 		latitude=33.654921,
@@ -18,7 +18,7 @@ def get_sign_info() -> SignInfo:
 		created_at=datetime.now()
 	)
 
-def get_sign_status() -> SignStatusType:
+def get_sign_status(sign_id: str) -> SignStatusType:
 	return SignStatusType(
 		group=ColorType.RED,
 		hit_point=25,
