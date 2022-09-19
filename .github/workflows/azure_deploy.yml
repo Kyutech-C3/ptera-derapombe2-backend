@@ -26,7 +26,23 @@ jobs:
 
     - name: Create cred.json
       run: |
-        echo ${{ secrets.CREDENTIAL_JSON }} > cred.json
+        mv base_cred.json cred.json
+
+    - name: Edit cred.json
+      uses: microsoft/variable-substitution@v1
+      with:
+        files: 'cred.json'
+      env:
+        type: ${{ secrets.CRED_JSON_TYPE }}
+        project_id: ${{ secrets.CRED_JSON_PROJECT_ID }}
+        private_key_id: ${{ secrets.CRED_JSON_PRIVATE_KEY_ID }}
+        private_key: ${{ secrets.CRED_JSON_PRIVATE_KEY }}
+        client_email: ${{ secrets.CRED_JSON_CLIENT_EMAIL }}
+        client_id: ${{ secrets.CRED_JSON_CLIENT_ID }}
+        auth_uri: ${{ secrets.CRED_JSON_AUTH_URI }}
+        token_uri: ${{ secrets.CRED_JSON_TOKEN_URI }}
+        auth_provider_x509_cert_url: ${{ secrets.CRED_JSON_AUTH_PROVIDER }}
+        client_x509_cert_url: ${{ secrets.CRED_JSON_CLIENT }}
 
     - uses: azure/docker-login@v1
       with:
