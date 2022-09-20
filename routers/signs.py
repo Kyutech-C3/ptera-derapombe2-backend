@@ -106,22 +106,6 @@ def exhume_sign(sign_id: str) -> list[ExhumeResult]:
 		)
 	]
 
-def attack_sign(sign_id: str, having_item_id: str) -> AttackResult:
-	return AttackResult(
-		items=[
-			ItemType(
-				id='hogehoge',
-				name='fugafuga',
-				level=1,
-				effect=ItemEffectType.HEAL,
-				value=20,
-				quantity=24
-			)
-		],
-		get_exp_point=1024,
-		loss_hit_point=12
-	)
-
 def predict_image(image: Upload) -> PredictResult:
 	return PredictResult(
 		status=True,

@@ -3,7 +3,7 @@ from typing import Optional
 import strawberry
 from db.models import Sign, SignStatus
 from schemas.general import ColorType
-from schemas.items import ItemResult, ItemType
+from schemas.items import ItemType
 from schemas.users import UserType
 
 @strawberry.type()
@@ -64,14 +64,14 @@ class Gallery:
 
 @strawberry.type()
 class ExhumeResult:
-	get_exp_point: int
-	get_items: list[ItemResult]
+	items: list[ItemType]
+	exp_point: int
 
 @strawberry.type()
-class AttackResult:
-	items: list[ItemType]
-	get_exp_point: int
-	loss_hit_point: int
+class UpdateSignData:
+	exp_point: int
+	hit_point_diff: int
+	sign: SignType
 
 @strawberry.input()
 class RegistSignInput:

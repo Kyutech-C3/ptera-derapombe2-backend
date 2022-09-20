@@ -4,6 +4,7 @@ from cruds import items as ci
 from strawberry.types import Info
 from db.database import get_db
 from routers.utils import verify_token
+from schemas.signs import UpdateSignData
 
 def attach_item(sign_id: str, item_id: str, info: Info) -> list[ItemType]:
 	db = next(get_db())
@@ -28,6 +29,14 @@ def delete_item(sign_id: str, item_id: str, info: Info) -> list[ItemType]:
 	attached_items = ci.delete_item(db, user_id, item_id, sign_id)
 
 	return attached_items
+
+def update_sign(sign_id: str, item_id: str, info: Info) -> UpdateSignData:
+	db = next(get_db())
+	user_id = verify_token(info)
+
+	updated_sign_data = ci.update_sign(db, sign_id, item_id, user_id)
+
+	return updated_sign_data
 
 def get_my_items() -> list[ItemType]:
 	return [

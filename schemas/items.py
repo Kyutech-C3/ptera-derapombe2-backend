@@ -15,9 +15,3 @@ class ItemType:
 		data = instance.__dict__
 		del data['_sa_instance_state']
 		return cls(**data)
-
-
-@strawberry.type
-class ItemResult:
-	item: ItemType
-	number_of_acquisition: int

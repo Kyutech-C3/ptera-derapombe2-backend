@@ -3,7 +3,7 @@ from strawberry.fastapi import GraphQLRouter
 from schemas.items import ItemType
 from schemas.polygons import MapInfo, PowerRatio
 from schemas.predict import PredictResult
-from schemas.signs import AttackResult, ExhumeResult, Gallery, SignType
+from schemas.signs import ExhumeResult, Gallery, SignType, UpdateSignData
 from schemas.users import UserType
 from routers import (
 	users as ru,
@@ -29,11 +29,12 @@ class Mutation:
 	attach_item: list[ItemType] = strawberry.field(resolver=ri.attach_item)
 	change_item: list[ItemType] = strawberry.field(resolver=ri.change_item)
 	delete_item: list[ItemType] = strawberry.field(resolver=ri.delete_item)
+	attack_sign: UpdateSignData = strawberry.field(resolver=ri.update_sign)
+	heal_sign: UpdateSignData = strawberry.field(resolver=ri.update_sign)
 	# mock
 	update_user: UserType = strawberry.field(resolver=ru.update_user)
 	capture_sign: SignType = strawberry.field(resolver=rs.capture_sign)
 	exhume_sign: list[ExhumeResult] = strawberry.field(resolver=rs.exhume_sign)
-	attack_sign: AttackResult = strawberry.field(resolver=rs.attack_sign)
 	predict_image: PredictResult = strawberry.field(resolver=rs.predict_image)
 
 schema = strawberry.Schema(query=Query, mutation=Mutation)
