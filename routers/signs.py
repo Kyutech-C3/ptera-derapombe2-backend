@@ -1,9 +1,9 @@
 from datetime import datetime
 from strawberry.file_uploads import Upload
 from schemas.general import ColorType, ItemEffectType
-from schemas.items import ItemResult, ItemType
+from schemas.items import ItemType
 from schemas.predict import PredictResult, SuggestResult
-from schemas.signs import AttackResult, ExhumeResult, Gallery, RegistSignInput, SignInfo, SignType
+from schemas.signs import ExhumeResult, Gallery, RegistSignInput, SignInfo, SignType
 from cruds import signs as cs
 from strawberry.types import Info
 from db.database import get_db
@@ -89,18 +89,15 @@ def capture_sign(sign_id: str) -> SignType:
 def exhume_sign(sign_id: str) -> list[ExhumeResult]:
 	return [
 		ExhumeResult(
-			get_exp_point=1024,
-			get_items=[
-				ItemResult(
-					item=ItemType(
-						id='hogehoge',
-						name='fugafuga',
-						level=1,
-						effect=ItemEffectType.HEAL,
-						value=20,
-						quantity=24
-					),
-					number_of_acquisition=12
+			exp_point=1024,
+			items=[
+				ItemType(
+					id='hogehoge',
+					name='fugafuga',
+					level=1,
+					effect=ItemEffectType.HEAL,
+					value=20,
+					quantity=24
 				)
 			]
 		)
