@@ -25,12 +25,13 @@ class Query:
 @strawberry.type
 class Mutation:
 	add_user: UserType = strawberry.field(resolver=ru.add_user)
+	regist_sign: SignType = strawberry.field(resolver=rs.regist_sign)
 	# mock
 	update_user: UserType = strawberry.field(resolver=ru.update_user)
 	add_item: list[ItemType] = strawberry.field(resolver=ri.add_item)
 	change_item: list[ItemType] = strawberry.field(resolver=ri.change_item)
 	delete_item: list[ItemType] = strawberry.field(resolver=ri.delete_item)
-	capture_sign: list[SignType] = strawberry.field(resolver=rs.capture_sign)
+	capture_sign: SignType = strawberry.field(resolver=rs.capture_sign)
 	exhume_sign: list[ExhumeResult] = strawberry.field(resolver=rs.exhume_sign)
 	attack_sign: AttackResult = strawberry.field(resolver=rs.attack_sign)
 	predict_image: PredictResult = strawberry.field(resolver=rs.predict_image)

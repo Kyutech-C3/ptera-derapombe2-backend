@@ -60,3 +60,10 @@ class AttackResult:
 	items: list[ItemType]
 	get_exp_point: int
 	loss_hit_point: int
+
+@strawberry.input()
+class RegistSignInput:
+	base_sign_types: list[int]
+	longitude: float
+	latitude: float
+	image_path: str
