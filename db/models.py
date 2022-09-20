@@ -36,7 +36,6 @@ class User(Base):
     group = Column(Enum(Color))
     exp_point = Column(Integer, default=0)
     level = Column(Integer, default=1)
-    avatar_number = Column(Integer, default=0)
     created_at = Column(DateTime, default=datetime.now)
     updated_at = Column(DateTime, default=datetime.now)
 
