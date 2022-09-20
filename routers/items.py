@@ -9,7 +9,6 @@ def get_my_items() -> list[ItemType]:
 			level=1,
 			effect=ItemEffectType.HEAL,
 			value=20,
-			quantity=24
 		)
 	]
 
@@ -21,7 +20,6 @@ def add_item(having_item_id: str) -> list[ItemType]:
 			level=1,
 			effect=ItemEffectType.HEAL,
 			value=20,
-			quantity=24
 		)
 	]
 
@@ -33,7 +31,6 @@ def change_item(having_item_id: str, using_item_id: str) -> list[ItemType]:
 			level=1,
 			effect=ItemEffectType.HEAL,
 			value=20,
-			quantity=24
 		)
 	]
 
@@ -45,6 +42,5 @@ def delete_item(using_item_id: str) -> list[ItemType]:
 			level=1,
 			effect=ItemEffectType.HEAL,
 			value=20,
-			quantity=24
 		)
 	]

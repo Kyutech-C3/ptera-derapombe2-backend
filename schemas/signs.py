@@ -1,5 +1,6 @@
 from datetime import datetime
 import strawberry
+from db.models import Sign, SignStatus
 from schemas.general import ColorType
 from schemas.items import ItemResult, ItemType
 
@@ -15,11 +16,34 @@ class SignInfo:
 	max_item_slot: int
 	created_at: datetime
 
+	@classmethod
+	def from_instance(cls, instance: Sign) -> "SignInfo":
+		data = instance.__dict__
+		del data['_sa_instance_state']
+		return cls(**data)
+
 @strawberry.type(name="Sign")
-class SignType(SignInfo):
+class SignType:
+	id: str
+	base_sign_types: list[int]
+	longitude: float
+	latitude: float
+	image_path: str
+	max_hit_point: int
+	max_link_slot: int
+	max_item_slot: int
+	created_at: datetime
 	group: ColorType
 	hit_point: int
 	items: list[ItemType]
+
+	@classmethod
+	def from_instance(cls, sign_instance: Sign, sign_status_instance: SignStatus) -> "SignType":
+		sign_data = sign_instance.__dict__
+		del sign_data['_sa_instance_state']
+		sign_status_data = sign_status_instance.__dict__
+		del sign_status_data['_sa_instance_state']
+		return cls(**sign_data, **sign_status_data)
 
 @strawberry.type()
 class Gallery:
