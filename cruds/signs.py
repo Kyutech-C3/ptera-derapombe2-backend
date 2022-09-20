@@ -43,3 +43,10 @@ def regist_sign(db: Session, user_id: str, base_sign_types: list[int], longitude
 
 	registed_sign = SignType.from_instance(sign, sign_status)
 	return registed_sign
+
+def get_sign_by_id(db: Session, sign_id: str) -> SignType:
+	sign = db.query(Sign).get(sign_id)
+	if sign is None:
+		raise Exception('sign is not found')
+	sign_status = db.query(SignStatus).get(sign_id)
+	return SignType.from_instance(sign, sign_status)
