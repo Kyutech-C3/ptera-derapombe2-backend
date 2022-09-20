@@ -3,7 +3,7 @@ from strawberry.fastapi import GraphQLRouter
 from schemas.items import ItemType
 from schemas.polygons import MapInfo, PowerRatio
 from schemas.predict import PredictResult
-from schemas.signs import AttackResult, ExhumeResult, Gallery, SignInfo, SignStatusType, SignType
+from schemas.signs import AttackResult, ExhumeResult, Gallery, SignType
 from schemas.users import UserType
 from routers import (
 	users as ru,
@@ -14,14 +14,12 @@ from routers import (
 
 @strawberry.type
 class Query:
-	user: UserType = strawberry.field(resolver=ru.get_user)
-	me: UserType = strawberry.field(resolver=ru.get_me)
+	user: UserType = strawberry.field(resolver=ru.get_me)
 	# mock
 	power_ratio: PowerRatio = strawberry.field(resolver=rp.get_power_ratio)
-	sign_info: SignInfo = strawberry.field(resolver=rs.get_sign_info)
-	sign_status: SignStatusType = strawberry.field(resolver=rs.get_sign_status)
-	my_items: list[ItemType] = strawberry.field(resolver=ri.get_my_items)
-	my_galleries: list[Gallery] = strawberry.field(resolver=rs.get_my_galleries)
+	sign: SignType = strawberry.field(resolver=rs.get_sign)
+	items: list[ItemType] = strawberry.field(resolver=ri.get_my_items)
+	galleries: list[Gallery] = strawberry.field(resolver=rs.get_my_galleries)
 	map_info: MapInfo = strawberry.field(resolver=rp.get_map_info)
 
 @strawberry.type

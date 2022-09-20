@@ -3,10 +3,10 @@ from strawberry.file_uploads import Upload
 from schemas.general import ColorType, ItemEffectType
 from schemas.items import ItemResult, ItemType
 from schemas.predict import PredictResult, SuggestResult
-from schemas.signs import AttackResult, ExhumeResult, Gallery, SignInfo, SignStatusType, SignType
+from schemas.signs import AttackResult, ExhumeResult, Gallery, SignInfo, SignType
 
-def get_sign_info(sign_id: str) -> SignInfo:
-	return SignInfo(
+def get_sign(sign_id: str) -> SignType:
+	return SignType(
 		id=sign_id,
 		base_sign_types=[1],
 		longitude=130.671892,
@@ -15,11 +15,7 @@ def get_sign_info(sign_id: str) -> SignInfo:
 		max_hit_point=100,
 		max_item_slot=8,
 		max_link_slot=12,
-		created_at=datetime.now()
-	)
-
-def get_sign_status(sign_id: str) -> SignStatusType:
-	return SignStatusType(
+		created_at=datetime.now(),
 		group=ColorType.RED,
 		hit_point=25,
 		items=[ItemType(
@@ -55,29 +51,25 @@ def get_my_galleries() -> list[Gallery]:
 def capture_sign(sign_id: str) -> list[SignType]:
 	return [
 		SignType(
-			sign_info=SignInfo(
-				id=sign_id,
-				base_sign_types=[1],
-				longitude=130.671892,
-				latitude=33.654921,
-				image_path='https://s3.ap-northeast-1.wasabisys.com/mastodondb/accounts/avatars/000/000/004/original/ed26601233e5b5cf.png',
-				max_hit_point=100,
-				max_item_slot=8,
-				max_link_slot=12,
-				created_at=datetime.now()
-			),
-			sign_status=SignStatusType(
-				group=ColorType.RED,
-				hit_point=25,
-				items=[ItemType(
-					id='12341234',
-					name='攻撃耐性Ⅲ',
-					level=3,
-					effect=ItemEffectType.RESISTANCE,
-					value=0.75,
-					quantity=4
-				)]
-			)
+			id=sign_id,
+			base_sign_types=[1],
+			longitude=130.671892,
+			latitude=33.654921,
+			image_path='https://s3.ap-northeast-1.wasabisys.com/mastodondb/accounts/avatars/000/000/004/original/ed26601233e5b5cf.png',
+			max_hit_point=100,
+			max_item_slot=8,
+			max_link_slot=12,
+			created_at=datetime.now(),
+			group=ColorType.RED,
+			hit_point=25,
+			items=[ItemType(
+				id='12341234',
+				name='攻撃耐性Ⅲ',
+				level=3,
+				effect=ItemEffectType.RESISTANCE,
+				value=0.75,
+				quantity=4
+			)]
 		)
 	]
 

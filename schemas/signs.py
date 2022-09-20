@@ -15,21 +15,16 @@ class SignInfo:
 	max_item_slot: int
 	created_at: datetime
 
-@strawberry.type()
-class Gallery:
-	base_sign_type: int
-	sign: list[SignInfo]
-
-@strawberry.type(name="SignStatus")
-class SignStatusType:
+@strawberry.type(name="Sign")
+class SignType(SignInfo):
 	group: ColorType
 	hit_point: int
 	items: list[ItemType]
 
-@strawberry.type(name="Sign")
-class SignType:
-	sign_info: SignInfo
-	sign_status: SignStatusType
+@strawberry.type()
+class Gallery:
+	base_sign_type: int
+	sign: list[SignInfo]
 
 @strawberry.type()
 class ExhumeResult:
