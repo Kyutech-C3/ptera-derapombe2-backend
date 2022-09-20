@@ -26,11 +26,11 @@ class Query:
 class Mutation:
 	add_user: UserType = strawberry.field(resolver=ru.add_user)
 	regist_sign: SignType = strawberry.field(resolver=rs.regist_sign)
-	# mock
-	update_user: UserType = strawberry.field(resolver=ru.update_user)
-	add_item: list[ItemType] = strawberry.field(resolver=ri.add_item)
+	attach_item: list[ItemType] = strawberry.field(resolver=ri.attach_item)
 	change_item: list[ItemType] = strawberry.field(resolver=ri.change_item)
 	delete_item: list[ItemType] = strawberry.field(resolver=ri.delete_item)
+	# mock
+	update_user: UserType = strawberry.field(resolver=ru.update_user)
 	capture_sign: SignType = strawberry.field(resolver=rs.capture_sign)
 	exhume_sign: list[ExhumeResult] = strawberry.field(resolver=rs.exhume_sign)
 	attack_sign: AttackResult = strawberry.field(resolver=rs.attack_sign)

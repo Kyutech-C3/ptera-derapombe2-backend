@@ -104,6 +104,8 @@ class HavingItem(Base):
     item_id = Column(String, ForeignKey('items.id', onupdate='CASCADE', ondelete='CASCADE'))
     user_id = Column(String, ForeignKey('users.id', onupdate='CASCADE', ondelete='CASCADE'))
     created_at = Column(DateTime, default=datetime.now)
+    user = relationship("User")
+    item = relationship("Item")
 
 @dataclasses.dataclass
 class UsingItem(Base):
@@ -112,6 +114,7 @@ class UsingItem(Base):
     item_id = Column(String, ForeignKey('items.id', onupdate='CASCADE', ondelete='CASCADE'))
     sign_id = Column(String, ForeignKey('sign_statuses.sign_id', onupdate='CASCADE', ondelete='CASCADE'))
     created_at = Column(DateTime, default=datetime.now)
+    item = relationship("Item")
 
 @dataclasses.dataclass
 class BaseSign(Base):
