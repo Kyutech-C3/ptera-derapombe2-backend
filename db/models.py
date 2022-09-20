@@ -43,7 +43,7 @@ class User(Base):
 class Sign(Base):
     __tablename__ = 'signs'
     id = Column(String, default=generate_uuid, primary_key=True)
-    name = Column(String, unique=False, )
+    name = Column(String, unique=False)
     longitude = Column(Float)
     latitude = Column(Float)
     image_path = Column(String)
