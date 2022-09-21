@@ -31,5 +31,5 @@ jobs:
           GOOGLE_SERVICE: ${{ secrets.CRED_JSON_BASE64 }}
         run: echo $GOOGLE_SERVICE | base64 --decode --ignore-garbage > cred.json
 
-      - name: Run tests
-        run: pipenv run pytest
+      # - name: Run tests
+      #   run: pipenv run pytest
