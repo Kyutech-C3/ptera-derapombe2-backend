@@ -21,6 +21,8 @@ strawberry-graphql = {extras = ["fastapi"], version = "*"}
 websockets = "*"
 opencv-python = "*"
 numpy = "*"
+pyproj = "*"
+shapely = "*"
 
 [dev-packages]
 mypy = "*"

@@ -1,5 +1,6 @@
 import dataclasses
 import enum
+from tokenize import group
 from typing import Any
 from uuid import uuid4
 from datetime import datetime
@@ -53,6 +54,7 @@ class Sign(Base):
     max_item_slot = Column(Integer)
     created_at = Column(DateTime, default=datetime.now)
     base_signs = relationship("BaseSign", secondary="belong_signs")
+    links = relationship("LinkingSign", primaryjoin="Sign.id == LinkingSign.sign_id or Sign.id == LinkingSign.other_sign_id")
 
 @dataclasses.dataclass
 class SignStatus(Base):
@@ -89,7 +91,10 @@ class LinkingSign(Base):
     sign_id = Column(String, ForeignKey('signs.id', onupdate='CASCADE', ondelete='CASCADE'), primary_key=True)
     other_sign_id = Column(String, ForeignKey('signs.id', onupdate='CASCADE', ondelete='CASCADE'), primary_key=True)
     polygon_id = Column(String, ForeignKey('polygons.id', onupdate='CASCADE', ondelete='SET NULL'), nullable=True)
+    group = Column(Enum(Color))
     created_at = Column(DateTime, default=datetime.now)
+    sign = relationship("Sign", primaryjoin="LinkingSign.sign_id == Sign.id")
+    other_sign = relationship("Sign", primaryjoin="LinkingSign.other_sign_id == Sign.id")
 
 @dataclasses.dataclass
 class GallerySign(Base):

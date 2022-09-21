@@ -14,8 +14,8 @@ def regist_sign(regist_sign_input: RegistSignInput, info: Info) -> SignType:
 	user_id = verify_token(info)
 	new_sign = cs.regist_sign(
 		db, user_id, regist_sign_input.base_sign_types,
-		regist_sign_input.longitude,
-		regist_sign_input.latitude,
+		regist_sign_input.coordinate.longitude,
+		regist_sign_input.coordinate.latitude,
 		regist_sign_input.image_path
 	)
 	return new_sign

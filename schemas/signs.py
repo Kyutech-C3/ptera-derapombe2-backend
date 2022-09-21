@@ -1,7 +1,7 @@
 from datetime import datetime
 from typing import Optional
 import strawberry
-from db.models import Sign, SignStatus
+from db.models import BaseSign, Sign, SignStatus
 from schemas.general import ColorType
 from schemas.items import ItemType
 from schemas.users import UserType
@@ -10,11 +10,33 @@ from schemas.users import UserType
 class Coordinate:
 	longitude: float
 	latitude: float
+	def __init__(self, longitude: float, latitude: float):
+		self.longitude = longitude
+		self.latitude = latitude
+
+@strawberry.input
+class CoordinateInput:
+	longitude: float
+	latitude: float
+
+@strawberry.type(name="BaseSign")
+class BaseSignType:
+	id: str
+	type: int
+	name: str
+
+	@classmethod
+	def from_instance(cls, instance: BaseSign) -> "BaseSignType":
+		return cls(
+			id=instance.id,
+			type=instance.type,
+			name=instance.name
+		)
 
 @strawberry.type()
 class SignInfo:
 	id: str
-	base_sign_types: list[int]
+	base_signs: list[BaseSignType]
 	coordinate: Coordinate
 	image_path: str
 	max_hit_point: int
@@ -26,7 +48,7 @@ class SignInfo:
 	def from_instance(cls, sign_instance: Sign, _: SignStatus = None) -> "SignInfo":
 		return cls(
 			id=sign_instance.id,
-			base_sign_types=[bs.type for bs in sign_instance.base_signs],
+			base_signs=[BaseSignType.from_instance(bs) for bs in sign_instance.base_signs],
 			coordinate=Coordinate(
 				longitude=sign_instance.longitude,
 				latitude=sign_instance.latitude,
@@ -40,10 +62,10 @@ class SignInfo:
 
 @strawberry.type(name="Sign")
 class SignType(SignInfo):
-	group: ColorType
-	hit_point: int
-	owner: UserType
-	items: list[ItemType]
+	group: Optional[ColorType]
+	hit_point: Optional[int]
+	owner: Optional[UserType]
+	items: Optional[list[ItemType]]
 	link_num: int
 
 	@classmethod
@@ -53,7 +75,7 @@ class SignType(SignInfo):
 			owner = UserType.from_instance(sign_status_instance.user)
 		return cls(
 			id=sign_instance.id,
-			base_sign_types=[bs.type for bs in sign_instance.base_signs],
+			base_signs=[BaseSignType.from_instance(bs) for bs in sign_instance.base_signs],
 			coordinate=Coordinate(
 				longitude=sign_instance.longitude,
 				latitude=sign_instance.latitude,
@@ -66,12 +88,13 @@ class SignType(SignInfo):
 			hit_point=sign_status_instance.hit_point if sign_status_instance is not None else None,
 			owner=owner,
 			group=owner.group if sign_status_instance is not None else None,
-			items=[ItemType.from_instance(i) for i in sign_status_instance.items] if sign_status_instance is not None else None
+			items=[ItemType.from_instance(i) for i in sign_status_instance.items] if sign_status_instance is not None else None,
+			link_num=len(sign_instance.links)
 		)
 
 @strawberry.type()
 class Gallery:
-	base_sign_type: int
+	base_sign: BaseSignType
 	sign: list[SignInfo]
 
 @strawberry.type()
@@ -88,6 +111,5 @@ class UpdateSignData:
 @strawberry.input()
 class RegistSignInput:
 	base_sign_types: list[int]
-	longitude: float
-	latitude: float
+	coordinate: CoordinateInput
 	image_path: str

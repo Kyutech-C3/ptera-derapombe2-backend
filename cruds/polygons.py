@@ -5,9 +5,13 @@ from cruds.users import get_user_by_id
 from cruds.signs import get_sign_by_id
 from schemas.polygons import Link, MapInfo, PolygonType, PowerRatio
 from schemas.signs import SignType
+from shapely.geometry import shape
+from shapely.ops import transform
+import pyproj
+from functools import partial
 
-LENGTH_MATER = 30
-LENGTH_DEGREE = LENGTH_MATER * 90 / 10000
+LENGTH_KILO_MATER = 10
+LENGTH_DEGREE = LENGTH_KILO_MATER * 90 / 10000
 
 def calc_power_ratio(db: Session):
 	red_surface = db.query(func.sum(Polygon.surface)).filter(Polygon.group == Color.RED).group_by(Polygon.group).first()
@@ -43,16 +47,16 @@ def create_link(db: Session, sign_id: str, other_sign_id: str, user_id: str):
 	if link_count >= max_link_slot or other_link_count >= max_link_slot:
 		raise Exception('these signs\' link slot is not empty')
 
-	if abs(sign.longitude - other_sign.longitude) > LENGTH_DEGREE or abs(sign.latitude - other_sign.latitude) > LENGTH_DEGREE:
+	if abs(sign.coordinate.longitude - other_sign.coordinate.longitude) > LENGTH_DEGREE or abs(sign.coordinate.latitude - other_sign.coordinate.latitude) > LENGTH_DEGREE:
 		raise Exception('too long distance between two signs')
 
 	if not (sign.group == user.group and other_sign.group == user.group):
 		raise Exception('you can link only your group Sign')
 
-	min_latitude = min(sign.latitude, other_sign.latitude)
-	max_latitude = max(sign.latitude, other_sign.latitude)
-	min_longitude = min(sign.longitude, other_sign.longitude)
-	max_longitude = max(sign.longitude, other_sign.longitude)
+	min_latitude = min(sign.coordinate.latitude, other_sign.coordinate.latitude)
+	max_latitude = max(sign.coordinate.latitude, other_sign.coordinate.latitude)
+	min_longitude = min(sign.coordinate.longitude, other_sign.coordinate.longitude)
+	max_longitude = max(sign.coordinate.longitude, other_sign.coordinate.longitude)
 
 	nearly_signs = db.query(Sign).filter(
 		min_latitude - LENGTH_DEGREE < Sign.latitude,
@@ -73,7 +77,8 @@ def create_link(db: Session, sign_id: str, other_sign_id: str, user_id: str):
 
 	link = LinkingSign(
 		sign_id=sign_id,
-		other_sign_id=other_sign_id
+		other_sign_id=other_sign_id,
+		group=user.group
 	)
 	db.add(link)
 	db.commit()
@@ -91,8 +96,15 @@ def create_link(db: Session, sign_id: str, other_sign_id: str, user_id: str):
 		update_signs = [get_sign_by_id(db, sign_id) for sign_id in data['polygon_signs']]
 		update_links = data['polygon_links']
 
-		# 面積確認
-		surface = 100
+		geom = shape({'type': 'Polygon', 'coordinates': [[[update_sign.coordinate.longitude, update_sign.coordinate.latitude] for update_sign in update_signs]]})
+		swapped_geom = swap_xy(geom)
+		project = partial(
+			pyproj.transform,
+			pyproj.CRS.from_epsg(4326),
+			pyproj.CRS.from_epsg(3410))
+		trans = transform(project, swapped_geom)
+
+		surface = trans.area
 
 		polygon = Polygon(
 			group=user.group,
@@ -142,3 +154,30 @@ def cross_check(one_start: SignType, one_end: SignType, other_start: SignType, o
 	if s * t > 0:
 		return False
 	return True
+
+def swap_xy(geom):
+    # (x, y) -> (y, x)
+    def swap_xy_coords(coords):
+        for x, y in coords:
+            yield (y, x)
+
+    # if geom.type == 'Polygon':
+    def swap_polygon(geom):
+        ring = geom.exterior
+        shell = type(ring)(list(swap_xy_coords(ring.coords)))
+        holes = list(geom.interiors)
+        for pos, ring in enumerate(holes):
+            holes[pos] = type(ring)(list(swap_xy_coords(ring.coords)))
+        return type(geom)(shell, holes)
+
+    # if geom.type == 'MultiPolygon':
+    def swap_multipolygon(geom):
+        return type(geom)([swap_polygon(part) for part in geom.geoms])
+
+    # Main
+    if geom.type == 'Polygon':
+        return swap_polygon(geom)
+    elif geom.type == 'MultiPolygon':
+        return swap_multipolygon(geom)
+    else:
+        raise TypeError('Unexpected geom.type:', geom.type)
