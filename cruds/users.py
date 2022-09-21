@@ -12,11 +12,12 @@ def get_users(db: Session) -> list[User]:
 	users = db.query(User).all()
 	return users
 
-def create_user(db: Session, user_id: str, name: str, group: ColorType) -> User:
+def create_user(db: Session, user_id: str, name: str, group: ColorType, avatar_url) -> User:
 	user = User(
 		id=user_id,
 		name=name,
 		group=group,
+		avatar_url=avatar_url
 	)
 	db.add(user)
 	db.commit()

@@ -1,13 +1,27 @@
+from sqlalchemy import func, or_, and_
 from sqlalchemy.orm import Session
-from sqlalchemy import or_, and_
+from db.models import LinkingSign, Polygon, Sign, Color
 from cruds.users import get_user_by_id
 from cruds.signs import get_sign_by_id
-from db.models import LinkingSign, Polygon, Sign
-from schemas.polygons import Link, MapInfo, PolygonType
+from schemas.polygons import Link, MapInfo, PolygonType, PowerRatio
 from schemas.signs import SignType
 
 LENGTH_MATER = 30
 LENGTH_DEGREE = LENGTH_MATER * 90 / 10000
+
+def calc_power_ratio(db: Session):
+	red_surface = db.query(func.sum(Polygon.surface)).filter(Polygon.group == Color.RED).group_by(Polygon.group).first()
+	if red_surface is None:
+		red_surface = 0
+	green_surface = db.query(func.sum(Polygon.surface)).filter(Polygon.group == Color.GREEN).group_by(Polygon.group).first()
+	if green_surface is None:
+		green_surface = 0
+
+	return PowerRatio(
+		red=red_surface/(red_surface+green_surface) if (red_surface+green_surface) > 0 else 0.5,
+		green=green_surface/(red_surface+green_surface) if (red_surface+green_surface) > 0 else 0.5
+	)
+
 
 def create_link(db: Session, sign_id: str, other_sign_id: str, user_id: str):
 	user = get_user_by_id(db, user_id)

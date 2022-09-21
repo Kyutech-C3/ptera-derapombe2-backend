@@ -5,22 +5,26 @@ from schemas.polygons import MapInfo, PowerRatio
 from schemas.predict import PredictResult
 from schemas.signs import ExhumeResult, Gallery, SignType, UpdateSignData
 from schemas.users import UserType
+from schemas.leveling import Leveling
 from routers import (
 	users as ru,
 	polygons as rp,
 	signs as rs,
-	items as ri
+	predict as pr,
+	items as ri,
+	leveling as rl
 )
 
 @strawberry.type
 class Query:
 	user: UserType = strawberry.field(resolver=ru.get_me)
-	# mock
 	power_ratio: PowerRatio = strawberry.field(resolver=rp.get_power_ratio)
 	sign: SignType = strawberry.field(resolver=rs.get_sign)
 	items: list[ItemType] = strawberry.field(resolver=ri.get_my_items)
 	galleries: list[Gallery] = strawberry.field(resolver=rs.get_my_galleries)
+	# mock
 	map_info: MapInfo = strawberry.field(resolver=rp.get_map_info)
+	leveling: Leveling = strawberry.field(resolver=rl.get_level)
 
 @strawberry.type
 class Mutation:
@@ -36,7 +40,7 @@ class Mutation:
 	connect_signs: MapInfo = strawberry.field(resolver=rp.create_link)
 	# mock
 	update_user: UserType = strawberry.field(resolver=ru.update_user)
-	predict_image: PredictResult = strawberry.field(resolver=rs.predict_image)
+	predict_image: PredictResult = strawberry.field(resolver=pr.predict)
 
 schema = strawberry.Schema(query=Query, mutation=Mutation)
 

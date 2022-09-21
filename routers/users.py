@@ -11,10 +11,10 @@ def get_me(info: Info) -> UserType:
 	me = cu.get_user_by_id(db, user_id)
 	return me
 
-def add_user(name: str, group: ColorType, info: Info) -> UserType:
+def add_user(name: str, group: ColorType, avatar_url: str, info: Info) -> UserType:
 	db = next(get_db())
 	user_id = verify_token(info)
-	user = cu.create_user(db, user_id, name, group)
+	user = cu.create_user(db, user_id, name, group, avatar_url)
 	return UserType.from_instance(user)
 
 def update_user(name: str) -> UserType:

@@ -98,6 +98,7 @@ class GallerySign(Base):
     sign_id = Column(String, ForeignKey('signs.id', onupdate='CASCADE', ondelete='CASCADE'))
     user_id = Column(String, ForeignKey('users.id', onupdate='CASCADE', ondelete='CASCADE'))
     created_at = Column(DateTime, default=datetime.now)
+    sign = relationship("Sign")
 
 @dataclasses.dataclass
 class HavingItem(Base):
@@ -123,6 +124,7 @@ class BaseSign(Base):
     __tablename__ = 'base_signs'
     id = Column(String, default=generate_uuid, primary_key=True)
     type = Column(Integer)
+    name = Column(String, unique=True)
 
 @dataclasses.dataclass
 class BelongSign(Base):
@@ -130,3 +132,9 @@ class BelongSign(Base):
     sign_id = Column(String, ForeignKey('signs.id', onupdate='CASCADE', ondelete='CASCADE'), primary_key=True)
     base_sign_id = Column(String, ForeignKey('base_signs.id', onupdate='CASCADE', ondelete='CASCADE'), primary_key=True)
     created_at = Column(DateTime, default=datetime.now)
+
+@dataclasses.dataclass
+class Level(Base):
+    __tablename__ = 'level'
+    level = Column(Integer, primary_key=True)
+    required_exp = Column(Integer)

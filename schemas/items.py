@@ -12,6 +12,10 @@ class ItemType:
 
 	@classmethod
 	def from_instance(cls, instance: Item) -> "ItemType":
-		data = instance.__dict__
-		del data['_sa_instance_state']
-		return cls(**data)
+		return cls(
+			id=instance.id,
+			name=instance.name,
+			level=instance.level,
+			effect=instance.effect,
+			value=instance.value
+		)

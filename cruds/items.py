@@ -112,3 +112,7 @@ def update_sign(db: Session, sign_id: str, item_id: str, user_id: str) -> Update
 		hit_point_diff=hit_point_diff,
 		sign=get_sign_by_id(db, sign_id)
 	)
+
+def get_user_items(db: Session, user_id: str):
+	having_items = db.query(HavingItem).filter(HavingItem.user_id == user_id).all()
+	return [ItemType.from_instance(having_item.item) for having_item in having_items]
