@@ -1,5 +1,6 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
+from cruds.init import init_base_sign, init_item
 from db.database import engine
 from db.models import Base
 from routers.graphql import graphql_router
@@ -16,6 +17,9 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
+
+init_base_sign()
+init_item()
 
 @app.get('/')
 async def health():

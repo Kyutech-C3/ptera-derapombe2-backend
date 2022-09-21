@@ -1,9 +1,24 @@
 from datetime import datetime
 from strawberry.file_uploads import Upload
 from schemas.general import ColorType, ItemEffectType
-from schemas.items import ItemResult, ItemType
+from schemas.items import ItemType
 from schemas.predict import PredictResult, SuggestResult
-from schemas.signs import AttackResult, ExhumeResult, Gallery, RegistSignInput, SignInfo, SignType
+from schemas.signs import ExhumeResult, Gallery, RegistSignInput, SignInfo, SignType
+from cruds import signs as cs
+from strawberry.types import Info
+from db.database import get_db
+from routers.utils import verify_token
+
+def regist_sign(regist_sign_input: RegistSignInput, info: Info) -> SignType:
+	db = next(get_db())
+	user_id = verify_token(info)
+	new_sign = cs.regist_sign(
+		db, user_id, regist_sign_input.base_sign_types,
+		regist_sign_input.longitude,
+		regist_sign_input.latitude,
+		regist_sign_input.image_path
+	)
+	return new_sign
 
 def get_sign(sign_id: str) -> SignType:
 	return SignType(
@@ -48,22 +63,6 @@ def get_my_galleries() -> list[Gallery]:
 		)
 	]
 
-def regist_sign(regist_sign_input: RegistSignInput) -> SignType:
-	return SignType(
-		id='hoge',
-		base_sign_types=regist_sign_input.base_sign_types,
-		longitude=regist_sign_input.longitude,
-		latitude=regist_sign_input.latitude,
-		image_path=regist_sign_input.image_path,
-		max_hit_point=1000,
-		max_item_slot=8,
-		max_link_slot=12,
-		created_at=datetime.now(),
-		group=ColorType.RED,
-		hit_point=100,
-		items=[]
-	)
-
 def capture_sign(sign_id: str) -> SignType:
 	return SignType(
 		id=sign_id,
@@ -90,38 +89,19 @@ def capture_sign(sign_id: str) -> SignType:
 def exhume_sign(sign_id: str) -> list[ExhumeResult]:
 	return [
 		ExhumeResult(
-			get_exp_point=1024,
-			get_items=[
-				ItemResult(
-					item=ItemType(
-						id='hogehoge',
-						name='fugafuga',
-						level=1,
-						effect=ItemEffectType.HEAL,
-						value=20,
-						quantity=24
-					),
-					number_of_acquisition=12
+			exp_point=1024,
+			items=[
+				ItemType(
+					id='hogehoge',
+					name='fugafuga',
+					level=1,
+					effect=ItemEffectType.HEAL,
+					value=20,
+					quantity=24
 				)
 			]
 		)
 	]
-
-def attack_sign(sign_id: str, having_item_id: str) -> AttackResult:
-	return AttackResult(
-		items=[
-			ItemType(
-				id='hogehoge',
-				name='fugafuga',
-				level=1,
-				effect=ItemEffectType.HEAL,
-				value=20,
-				quantity=24
-			)
-		],
-		get_exp_point=1024,
-		loss_hit_point=12
-	)
 
 def predict_image(image: Upload) -> PredictResult:
 	return PredictResult(

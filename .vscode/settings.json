@@ -17,7 +17,8 @@
     "python.linting.flake8Args": [
         "--max-line-length=150",
         "--max-complexity","20",
-        "--ignore=E302,E305,W191"
+        "--ignore=E302,E305,W191",
+        "--extend-ignore=C90,E,F,W tests"
     ],
     "python.formatting.provider": "autopep8",
     "python.formatting.autopep8Args": [

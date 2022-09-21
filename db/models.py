@@ -6,6 +6,7 @@ from datetime import datetime
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy import Column as Col, DateTime, Enum, Integer, Float, ForeignKey
 from sqlalchemy.sql.sqltypes import String
+from sqlalchemy.orm import relationship
 
 Base: Any = declarative_base()
 
@@ -43,7 +44,6 @@ class User(Base):
 class Sign(Base):
     __tablename__ = 'signs'
     id = Column(String, default=generate_uuid, primary_key=True)
-    name = Column(String, unique=False)
     longitude = Column(Float)
     latitude = Column(Float)
     image_path = Column(String)
@@ -51,6 +51,7 @@ class Sign(Base):
     max_link_slot = Column(Integer)
     max_item_slot = Column(Integer)
     created_at = Column(DateTime, default=datetime.now)
+    base_signs = relationship("BaseSign", secondary="belong_signs")
 
 @dataclasses.dataclass
 class SignStatus(Base):
@@ -60,6 +61,8 @@ class SignStatus(Base):
     hit_point = Column(Integer)
     created_at = Column(DateTime, default=datetime.now)
     updated_at = Column(DateTime, default=datetime.now)
+    items = relationship("UsingItem")
+    user = relationship("User")
 
 @dataclasses.dataclass
 class Item(Base):
@@ -101,14 +104,17 @@ class HavingItem(Base):
     item_id = Column(String, ForeignKey('items.id', onupdate='CASCADE', ondelete='CASCADE'))
     user_id = Column(String, ForeignKey('users.id', onupdate='CASCADE', ondelete='CASCADE'))
     created_at = Column(DateTime, default=datetime.now)
+    user = relationship("User")
+    item = relationship("Item")
 
 @dataclasses.dataclass
 class UsingItem(Base):
     __tablename__ = 'using_items'
     id = Column(String, default=generate_uuid, primary_key=True)
     item_id = Column(String, ForeignKey('items.id', onupdate='CASCADE', ondelete='CASCADE'))
-    sign_id = Column(String, ForeignKey('signs.id', onupdate='CASCADE', ondelete='CASCADE'))
+    sign_id = Column(String, ForeignKey('sign_statuses.sign_id', onupdate='CASCADE', ondelete='CASCADE'))
     created_at = Column(DateTime, default=datetime.now)
+    item = relationship("Item")
 
 @dataclasses.dataclass
 class BaseSign(Base):
