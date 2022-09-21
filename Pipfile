@@ -17,9 +17,10 @@ sqlalchemy-utils = "*"
 python-dotenv = "*"
 graphene-sqlalchemy = "*"
 firebase-admin = "*"
-scikit-learn = "*"
 strawberry-graphql = {extras = ["fastapi"], version = "*"}
 websockets = "*"
+opencv-python = "*"
+numpy = "*"
 
 [dev-packages]
 mypy = "*"
