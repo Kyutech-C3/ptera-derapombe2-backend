@@ -27,6 +27,7 @@ def get_map_info() -> MapInfo:
 					name='name',
 					group=ColorType.RED,
 					exp_point=0,
+					avatar_url='https://s3.ap-northeast-1.wasabisys.com/mastodondb/accounts/avatars/000/000/004/original/ed26601233e5b5cf.png',
 					level=1,
 					created_at=datetime.now(),
 					updated_at=datetime.now()
@@ -49,6 +50,7 @@ def get_map_info() -> MapInfo:
 					id='12345',
 					name='name',
 					group=ColorType.RED,
+					avatar_url='https://s3.ap-northeast-1.wasabisys.com/mastodondb/accounts/avatars/000/000/004/original/ed26601233e5b5cf.png',
 					exp_point=0,
 					level=1,
 					created_at=datetime.now(),
@@ -63,6 +65,7 @@ def get_map_info() -> MapInfo:
 					name='name',
 					group=ColorType.RED,
 					exp_point=0,
+					avatar_url='https://s3.ap-northeast-1.wasabisys.com/mastodondb/accounts/avatars/000/000/004/original/ed26601233e5b5cf.png',
 					level=1,
 					created_at=datetime.now(),
 					updated_at=datetime.now()
@@ -83,6 +86,16 @@ def get_map_info() -> MapInfo:
 				longitude=130.8784008377654,
 				image_path='https://s3.ap-northeast-1.wasabisys.com/mastodondb/accounts/avatars/000/000/004/original/ed26601233e5b5cf.png',
 				max_hit_point=100,
+				owner=UserType(
+					id='12345',
+					name='name',
+					group=ColorType.RED,
+					exp_point=0,
+					avatar_url='https://s3.ap-northeast-1.wasabisys.com/mastodondb/accounts/avatars/000/000/004/original/ed26601233e5b5cf.png',
+					level=1,
+					created_at=datetime.now(),
+					updated_at=datetime.now()
+				),
 				max_item_slot=8,
 				max_link_slot=12,
 				created_at=datetime.now(),
