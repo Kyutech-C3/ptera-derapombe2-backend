@@ -182,25 +182,15 @@ def swap_xy(geom):
     else:
         raise TypeError('Unexpected geom.type:', geom.type)
 
-def get_map_info(db: Session, min_coordinate: Coordinate, max_coordinate: Coordinate):
+def get_map_info(db: Session):
 	map_signs = []
-	signs = db.query(Sign).filter(
-		Sign.latitude > min_coordinate.latitude,
-		Sign.latitude < max_coordinate.latitude,
-		Sign.longitude > min_coordinate.longitude,
-		Sign.longitude < max_coordinate.longitude
-	).all()
+	signs = db.query(Sign).all()
 	for sign in signs:
 		sign_status = db.query(SignStatus).filter(SignStatus.sign_id == sign.id).first()
 		map_signs.append(SignType.from_instance(sign, sign_status))
 
-	linking = db.query(LinkingSign).filter(or_(LinkingSign.sign.in_(signs), LinkingSign.other_sign.in_(signs))).all()
-	polygon_ids: List[str] = []
-	for link in linking:
-		if link.polygon_id is not None:
-			polygon_ids.append(link.polygon_id)
-	polygon_ids = set(polygon_ids)
-	polygons = db.query(Polygon).filter(Polygon.id.in_(polygon_ids)).all()
+	linking = db.query(LinkingSign).all()
+	polygons = db.query(Polygon).all()
 	return MapInfo(
 		signs=map_signs,
 		links=[Link.from_instance(link) for link in linking],
