@@ -1,7 +1,7 @@
 from typing import Dict
 from sqlalchemy.orm.session import Session
 from cruds.users import get_user_by_id
-from db.models import BaseSign, BelongSign, GallerySign, HavingItem, Item, Sign, SignStatus, User
+from db.models import BaseSign, BelongSign, GallerySign, HavingItem, Item, Level, Sign, SignStatus, User
 from schemas.items import ItemType
 from schemas.signs import Gallery, SignInfo, ExhumeResult, SignType
 import random
@@ -86,6 +86,12 @@ def exhume_sign(db: Session, sign_id: str, user_id: str) -> ExhumeResult:
 
 	user = get_user_by_id(db, user_id)
 	user.exp_point += exp_point
+	next_border = db.query(Level).get(user.level+1)
+	while user.exp_point > next_border:
+		user.exp_point -= next_border
+		user.level += 1
+		next_border = db.query(Level).get(user.level+1)
+
 	for exhume_item in exhume_items:
 		db.add(HavingItem(
 			item_id=exhume_item.id,
