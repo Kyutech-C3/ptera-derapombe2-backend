@@ -1,4 +1,5 @@
 from datetime import datetime
+from typing import Optional
 import strawberry
 from db.models import LinkingSign, Polygon
 from schemas.general import ColorType
@@ -6,7 +7,8 @@ from schemas.signs import Coordinate, SignType
 
 @strawberry.type()
 class Link:
-	polygon_id: str
+	polygon_id: Optional[str]
+	group: ColorType
 	sign_id: str
 	other_sign_id: str
 	one_coordinate: Coordinate

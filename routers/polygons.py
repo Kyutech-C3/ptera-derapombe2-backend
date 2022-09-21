@@ -108,7 +108,7 @@ def get_map_info() -> MapInfo:
 				owner=UserType(
 					id='12345',
 					name='name',
-					group=ColorType.RED,
+					group=ColorType.GREEN,
 					exp_point=0,
 					avatar_url='https://s3.ap-northeast-1.wasabisys.com/mastodondb/accounts/avatars/000/000/004/original/ed26601233e5b5cf.png',
 					level=1,
@@ -124,6 +124,7 @@ def get_map_info() -> MapInfo:
 		links=[
 			Link(
 				polygon_id='88888888',
+				group=ColorType.RED,
 				sign_id='11111111111',
 				other_sign_id='2222222222',
 				one_coordinate=Coordinate(
@@ -138,6 +139,7 @@ def get_map_info() -> MapInfo:
 			),
 			Link(
 				polygon_id='88888888',
+				group=ColorType.RED,
 				sign_id='2222222222',
 				other_sign_id='3333333333333333',
 				one_coordinate=Coordinate(
@@ -152,6 +154,7 @@ def get_map_info() -> MapInfo:
 			),
 			Link(
 				polygon_id='88888888',
+				group=ColorType.RED,
 				sign_id='11111111111',
 				other_sign_id='3333333333333333',
 				one_coordinate=Coordinate(

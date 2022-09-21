@@ -23,7 +23,6 @@ class Query:
 	items: list[ItemType] = strawberry.field(resolver=ri.get_my_items)
 	galleries: list[Gallery] = strawberry.field(resolver=rs.get_my_galleries)
 	leveling: Leveling = strawberry.field(resolver=rl.get_level)
-	# mock
 	map_info: MapInfo = strawberry.field(resolver=rp.get_map_info)
 
 @strawberry.type
