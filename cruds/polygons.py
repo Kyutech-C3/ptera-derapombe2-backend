@@ -1,10 +1,10 @@
 from sqlalchemy import func, or_, and_
 from sqlalchemy.orm import Session
-from db.models import LinkingSign, Polygon, Sign, Color
+from db.models import LinkingSign, Polygon, Sign, Color, SignStatus
 from cruds.users import get_user_by_id
 from cruds.signs import get_sign_by_id
 from schemas.polygons import Link, MapInfo, PolygonType, PowerRatio
-from schemas.signs import SignType
+from schemas.signs import Coordinate, SignType
 from shapely.geometry import shape
 from shapely.ops import transform
 import pyproj
@@ -181,3 +181,28 @@ def swap_xy(geom):
         return swap_multipolygon(geom)
     else:
         raise TypeError('Unexpected geom.type:', geom.type)
+
+def get_map_info(db: Session, min_coordinate: Coordinate, max_coordinate: Coordinate):
+	map_signs = []
+	signs = db.query(Sign).filter(
+		Sign.latitude > min_coordinate.latitude,
+		Sign.latitude < max_coordinate.latitude,
+		Sign.longitude > min_coordinate.longitude,
+		Sign.longitude < max_coordinate.longitude
+	).all()
+	for sign in signs:
+		sign_status = db.query(SignStatus).filter(SignStatus.sign_id == sign.id).first()
+		map_signs.append(SignType.from_instance(sign, sign_status))
+
+	linking = db.query(LinkingSign).filter(or_(LinkingSign.sign.in_(signs), LinkingSign.other_sign.in_(signs))).all()
+	polygon_ids: List[str] = []
+	for link in linking:
+		if link.polygon_id is not None:
+			polygon_ids.append(link.polygon_id)
+	polygon_ids = set(polygon_ids)
+	polygons = db.query(Polygon).filter(Polygon.id.in_(polygon_ids)).all()
+	return MapInfo(
+		signs=map_signs,
+		links=[Link.from_instance(link) for link in linking],
+		polygons=[PolygonType.from_instance(polygon) for polygon in polygons]
+	)
