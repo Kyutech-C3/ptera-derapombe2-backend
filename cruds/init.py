@@ -89,7 +89,7 @@ def init_base_sign():
 	base_sign = db.query(BaseSign).first()
 	if base_sign is not None:
 		return
-	for i in range(200):
+	for i in range(len(json_load)):
 		bs = BaseSign(
 			type=i,
 			name=json_load[i]
