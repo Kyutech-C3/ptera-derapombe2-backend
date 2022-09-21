@@ -39,6 +39,11 @@ def regist_sign(db: Session, user_id: str, base_sign_types: list[int], longitude
 		hit_point=sign.max_hit_point
 	)
 	db.add(sign_status)
+	gallery_sign = GallerySign(
+		sign_id=sign.id,
+		user_id=user_id
+	)
+	db.add(gallery_sign)
 	db.commit()
 	db.refresh(sign_status)
 
@@ -58,13 +63,14 @@ def get_user_galleries(db: Session, user_id: str) -> list[Gallery]:
 	for gallery in gallery_signs:
 		for base_sign in gallery.sign.base_signs:
 			if temp_dict.get(str(base_sign.type)) is None:
-				temp_dict[str(base_sign)] = [SignInfo.from_instance(gallery.sign)]
+				temp_dict[str(base_sign.type)] = [SignInfo.from_instance(gallery.sign)]
 			else:
-				temp_dict[str(base_sign)].append(SignInfo.from_instance(gallery.sign))
+				temp_dict[str(base_sign.type)].append(SignInfo.from_instance(gallery.sign))
 
-	signs_list = list(temp_dict.items())
+	signs_list = list(temp_dict.values())
 	galleries = []
 	for i, key in enumerate(list(temp_dict.keys())):
+		print(signs_list)
 		galleries.append(Gallery(
 			base_sign_type=int(key),
 			sign=signs_list[i]
