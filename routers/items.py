@@ -38,13 +38,10 @@ def update_sign(sign_id: str, item_id: str, info: Info) -> UpdateSignData:
 
 	return updated_sign_data
 
-def get_my_items() -> list[ItemType]:
-	return [
-		ItemType(
-			id='hogehoge',
-			name='fugafuga',
-			level=1,
-			effect=ItemEffectType.HEAL,
-			value=20,
-		)
-	]
+def get_my_items(info: Info) -> list[ItemType]:
+	db = next(get_db())
+	user_id = verify_token(info)
+
+	my_items = ci.get_user_items(db, user_id)
+
+	return my_items
