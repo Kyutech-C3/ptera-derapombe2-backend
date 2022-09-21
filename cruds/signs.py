@@ -1,9 +1,10 @@
 from typing import Dict
 from sqlalchemy.orm.session import Session
 from cruds.users import get_user_by_id
-from db.models import BaseSign, BelongSign, GallerySign, Sign, SignStatus
-
-from schemas.signs import Gallery, SignInfo, SignType
+from db.models import BaseSign, BelongSign, GallerySign, Item, Sign, SignStatus
+from schemas.items import ItemType
+from schemas.signs import Gallery, SignInfo, ExhumeResult, SignType
+import random
 
 def regist_sign(db: Session, user_id: str, base_sign_types: list[int], longitude: float, latitude: float, image_path: str) -> SignType:
 	# TODO 座標が近く，base_sign_typeが一致しているものはすでに登録されていないかと確認する処理もほしいね
@@ -21,8 +22,8 @@ def regist_sign(db: Session, user_id: str, base_sign_types: list[int], longitude
 		latitude=latitude,
 		image_path=image_path,
 		max_hit_point=100,
-		max_item_slot=8,
-		max_link_slot=12,
+		max_item_slot=6,
+		max_link_slot=2,
 	)
 	db.add(sign)
 	db.commit()
@@ -56,6 +57,37 @@ def get_sign_by_id(db: Session, sign_id: str) -> SignType:
 		raise Exception('sign is not found')
 	sign_status = db.query(SignStatus).get(sign_id)
 	return SignType.from_instance(sign, sign_status)
+
+def capture_sign(db: Session, sign_id: str, user_id: str) -> SignType:
+	sign = db.query(Sign).get(sign_id)
+	if sign is None:
+		raise Exception('sign_id is invalid')
+	sign_status = db.query(SignStatus).get(sign_id)
+	if sign_status is not None:
+		raise Exception('this sign is already captured')
+
+	sign_status = SignStatus(
+		sign_id=sign.id,
+		user_id=user_id,
+		hit_point=sign.max_hit_point
+	)
+
+	db.add(sign_status)
+	db.commit()
+	db.refresh(sign_status)
+
+	registed_sign = SignType.from_instance(sign, sign_status)
+	return registed_sign
+
+def exhume_sign(db: Session) -> ExhumeResult:
+	exp_point = 100
+	items = db.query(Item).all()
+	exhume_items = random.choices(items, k=random.randint(2, 6))
+
+	return ExhumeResult(
+		items=[ItemType.from_instance(exhume_item) for exhume_item in exhume_items],
+		exp_point=exp_point
+	)
 
 def get_user_galleries(db: Session, user_id: str) -> list[Gallery]:
 	gallery_signs = db.query(GallerySign).filter(GallerySign.user_id == user_id).all()

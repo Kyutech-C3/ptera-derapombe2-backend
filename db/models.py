@@ -81,6 +81,7 @@ class Polygon(Base):
     group = Column(Enum(Color))
     surface = Column(Float)
     created_at = Column(DateTime, default=datetime.now)
+    links = relationship("LinkingSign")
 
 @dataclasses.dataclass
 class LinkingSign(Base):

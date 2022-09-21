@@ -1,3 +1,4 @@
+from tokenize import group
 import strawberry
 from datetime import datetime
 from db.models import User
@@ -16,6 +17,12 @@ class UserType:
 
 	@classmethod
 	def from_instance(cls, instance: User) -> "UserType":
-		data = instance.__dict__
-		del data['_sa_instance_state']
-		return cls(**data)
+		return cls(
+			id=instance.id,
+			name=instance.name,
+			group=instance.group,
+			exp_point=instance.exp_point,
+			level=instance.level,
+			created_at=instance.created_at,
+			updated_at=instance.updated_at
+		)
