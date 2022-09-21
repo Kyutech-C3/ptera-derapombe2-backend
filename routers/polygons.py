@@ -92,7 +92,7 @@ def get_map_info() -> MapInfo:
 						id='item34r5tyujytr4',
 						name='耐久アップⅠ',
 						level=1,
-						effect=ItemEffect.RESISTANCE,
+						effect=ItemEffect.ENDURANCE,
 						value=10
 					),
 					ItemType(
