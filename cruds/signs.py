@@ -3,8 +3,9 @@ from sqlalchemy.orm.session import Session
 from cruds.users import get_user_by_id
 from db.models import BaseSign, BelongSign, GallerySign, HavingItem, Item, Level, Sign, SignStatus, User
 from schemas.items import ItemType
-from schemas.signs import Gallery, SignInfo, ExhumeResult, SignType
+from schemas.signs import Gallery, NearlySign, SignInfo, ExhumeResult, SignType
 import random
+from geopy.distance import geodesic
 
 def regist_sign(db: Session, user_id: str, base_sign_types: list[int], longitude: float, latitude: float, image_path: str) -> SignType:
 	# TODO 座標が近く，base_sign_typeが一致しているものはすでに登録されていないかと確認する処理もほしいね
@@ -124,3 +125,26 @@ def get_user_galleries(db: Session, user_id: str) -> list[Gallery]:
 		))
 
 	return galleries
+
+def get_nearly_signs(db: Session, sign_id: str):
+	sign = db.query(Sign).get(sign_id)
+	main_coord = (sign.latitude, sign.longitude)
+
+	nearly_signs = []
+	candidate_nearly_signs = db.query(Sign).filter(
+		Sign.longitude > Sign.longitude - 0.0005,
+		Sign.longitude < Sign.longitude + 0.0005,
+		Sign.latitude > Sign.latitude - 0.0005,
+		Sign.latitude > Sign.latitude + 0.0005,
+		).all()
+
+	for nearly_sign in candidate_nearly_signs:
+		nearly_coord = (nearly_sign.latitude, sign.longitude)
+		dis = geodesic(main_coord, nearly_coord).m
+		if dis < 10:
+			sign_status = db.query(SignStatus).get(nearly_sign.id)
+			nearly_signs.append(NearlySign(
+				distanse=dis,
+				sign=SignType.from_instance(nearly_sign, sign_status)
+			))
+	return nearly_signs

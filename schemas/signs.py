@@ -113,3 +113,8 @@ class RegistSignInput:
 	base_sign_types: list[int]
 	coordinate: CoordinateInput
 	image_path: str
+
+@strawberry.type
+class NearlySign:
+	distanse: float
+	sign: SignType

@@ -3,9 +3,8 @@ from strawberry.fastapi import GraphQLRouter
 from schemas.items import ItemType
 from schemas.polygons import MapInfo, PowerRatio
 from schemas.predict import PredictResult
-from schemas.signs import ExhumeResult, Gallery, SignType, UpdateSignData
+from schemas.signs import ExhumeResult, Gallery, NearlySign, SignType, UpdateSignData
 from schemas.users import UserType
-from schemas.leveling import Leveling
 from routers import (
 	users as ru,
 	polygons as rp,
@@ -24,6 +23,7 @@ class Query:
 	galleries: list[Gallery] = strawberry.field(resolver=rs.get_my_galleries)
 	required_exp: list[int] = strawberry.field(resolver=rl.get_requied_exp_point)
 	map_info: MapInfo = strawberry.field(resolver=rp.get_map_info)
+	nearly_signs: list[NearlySign] = strawberry.field(resolver=rs.get_nearly_signs)
 
 @strawberry.type
 class Mutation:

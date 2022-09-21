@@ -23,6 +23,7 @@ opencv-python = "*"
 numpy = "*"
 pyproj = "*"
 shapely = "*"
+geopy = "*"
 
 [dev-packages]
 mypy = "*"

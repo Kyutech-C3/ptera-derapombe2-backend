@@ -3,7 +3,7 @@ from strawberry.file_uploads import Upload
 from schemas.general import ColorType, ItemEffectType
 from schemas.items import ItemType
 from schemas.predict import PredictResult, SuggestResult
-from schemas.signs import ExhumeResult, Gallery, RegistSignInput, SignInfo, SignType
+from schemas.signs import ExhumeResult, Gallery, NearlySign, RegistSignInput, SignInfo, SignType
 from cruds import signs as cs
 from strawberry.types import Info
 from db.database import get_db
@@ -42,4 +42,10 @@ def get_my_galleries(info: Info) -> list[Gallery]:
 	db = next(get_db())
 	user_id = verify_token(info)
 	my_galleries = cs.get_user_galleries(db, user_id)
+	return my_galleries
+
+def get_nearly_signs(sign_id: str, info: Info) -> list[NearlySign]:
+	db = next(get_db())
+	verify_token(info)
+	my_galleries = cs.get_nearly_signs(db, sign_id)
 	return my_galleries
