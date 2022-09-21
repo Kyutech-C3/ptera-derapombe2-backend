@@ -9,6 +9,7 @@ from routers import (
 	users as ru,
 	polygons as rp,
 	signs as rs,
+	predict as pr,
 	items as ri
 )
 
@@ -34,7 +35,7 @@ class Mutation:
 	capture_sign: SignType = strawberry.field(resolver=rs.capture_sign)
 	exhume_sign: list[ExhumeResult] = strawberry.field(resolver=rs.exhume_sign)
 	attack_sign: AttackResult = strawberry.field(resolver=rs.attack_sign)
-	predict_image: PredictResult = strawberry.field(resolver=rs.predict_image)
+	predict_image: PredictResult = strawberry.field(resolver=pr.predict)
 
 schema = strawberry.Schema(query=Query, mutation=Mutation)
 
