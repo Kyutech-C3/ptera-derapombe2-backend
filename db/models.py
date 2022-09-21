@@ -122,6 +122,7 @@ class BaseSign(Base):
     __tablename__ = 'base_signs'
     id = Column(String, default=generate_uuid, primary_key=True)
     type = Column(Integer)
+    name = Column(String, unique=True)
 
 @dataclasses.dataclass
 class BelongSign(Base):
