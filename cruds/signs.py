@@ -88,7 +88,7 @@ def exhume_sign(db: Session, sign_id: str, user_id: str) -> ExhumeResult:
 	user.exp_point += exp_point
 	next_border = db.query(Level).get(user.level+1)
 	while user.exp_point > next_border.required_exp:
-		user.exp_point -= next_border
+		user.exp_point -= next_border.required_exp
 		user.level += 1
 		next_border = db.query(Level).get(user.level+1)
 
