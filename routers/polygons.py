@@ -123,6 +123,7 @@ def get_map_info() -> MapInfo:
 		],
 		links=[
 			Link(
+				polygon_id='88888888',
 				sign_id='11111111111',
 				other_sign_id='2222222222',
 				one_coordinate=Coordinate(
@@ -136,6 +137,7 @@ def get_map_info() -> MapInfo:
 				created_at=datetime.now()
 			),
 			Link(
+				polygon_id='88888888',
 				sign_id='2222222222',
 				other_sign_id='3333333333333333',
 				one_coordinate=Coordinate(
@@ -149,6 +151,7 @@ def get_map_info() -> MapInfo:
 				created_at=datetime.now()
 			),
 			Link(
+				polygon_id='88888888',
 				sign_id='11111111111',
 				other_sign_id='3333333333333333',
 				one_coordinate=Coordinate(
