@@ -9,4 +9,4 @@ class SuggestResult:
 @strawberry.type()
 class PredictResult:
 	status: bool
-	scores: Optional[list[SuggestResult]]
+	scores: Optional[list[list[SuggestResult]]]

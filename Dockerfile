@@ -5,7 +5,7 @@ COPY . /app
 WORKDIR /app
 
 RUN apt update
-RUN apt install -y libpq-dev build-essential
+RUN apt install -y libpq-dev build-essential libgl1-mesa-dev
 RUN pip install pipenv
 RUN pipenv install
 
