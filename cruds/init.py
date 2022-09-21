@@ -1,5 +1,5 @@
 from db.database import get_db
-from db.models import BaseSign, Item, ItemEffect
+from db.models import BaseSign, Item, ItemEffect, Level
 from sqlalchemy.orm import Session
 import json
 
@@ -93,6 +93,21 @@ def init_base_sign():
 		bs = BaseSign(
 			type=i,
 			name=json_load[i]
+		)
+		db.add(bs)
+	db.commit()
+
+def init_leveling():
+	json_open = open('./assets/LevelingSetting.json', 'r')
+	json_load = json.load(json_open)
+	db: Session = next(get_db())
+	base_sign = db.query(Level).first()
+	if base_sign is not None:
+		return
+	for i in range(len(json_load)):
+		bs = Level(
+			level=i,
+			required_exp=json_load[i]
 		)
 		db.add(bs)
 	db.commit()

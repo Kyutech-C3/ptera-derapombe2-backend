@@ -5,12 +5,14 @@ from schemas.polygons import MapInfo, PowerRatio
 from schemas.predict import PredictResult
 from schemas.signs import ExhumeResult, Gallery, SignType, UpdateSignData
 from schemas.users import UserType
+from schemas.leveling import Leveling
 from routers import (
 	users as ru,
 	polygons as rp,
 	signs as rs,
 	predict as pr,
-	items as ri
+	items as ri,
+	leveling as rl
 )
 
 @strawberry.type
@@ -22,6 +24,7 @@ class Query:
 	galleries: list[Gallery] = strawberry.field(resolver=rs.get_my_galleries)
 	# mock
 	map_info: MapInfo = strawberry.field(resolver=rp.get_map_info)
+	leveling: Leveling = strawberry.field(resolver=rl.get_level)
 
 @strawberry.type
 class Mutation:

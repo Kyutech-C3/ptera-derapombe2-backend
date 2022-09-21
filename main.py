@@ -1,6 +1,6 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
-from cruds.init import init_base_sign, init_item
+from cruds.init import init_base_sign, init_item, init_leveling
 from db.database import engine
 from db.models import Base
 from routers.graphql import graphql_router
@@ -22,6 +22,7 @@ app.mount("/static", StaticFiles(directory="./assets/image/X100-2/"), name="stat
 
 init_base_sign()
 init_item()
+init_leveling()
 
 @app.get('/')
 async def health():
