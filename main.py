@@ -5,6 +5,7 @@ from db.database import engine
 from db.models import Base
 from routers.graphql import graphql_router
 from routers.websocket import websocket_router
+from fastapi.staticfiles import StaticFiles
 
 Base.metadata.create_all(bind=engine)
 
@@ -17,6 +18,7 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
+app.mount("/static", StaticFiles(directory="./assets/image/X100-2/"), name="static")
 
 init_base_sign()
 init_item()
