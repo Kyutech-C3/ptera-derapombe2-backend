@@ -23,6 +23,7 @@ class UserType:
 			group=instance.group,
 			exp_point=instance.exp_point,
 			level=instance.level,
+			avatar_url=instance.avatar_url,
 			created_at=instance.created_at,
 			updated_at=instance.updated_at
 		)
