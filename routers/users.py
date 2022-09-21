@@ -17,13 +17,8 @@ def add_user(name: str, group: ColorType, avatar_url: str, info: Info) -> UserTy
 	user = cu.create_user(db, user_id, name, group, avatar_url)
 	return UserType.from_instance(user)
 
-def update_user(name: str) -> UserType:
-	return UserType(
-		id='12345',
-		name=name,
-		group=ColorType.RED,
-		exp_point=0,
-		level=1,
-		created_at=datetime.now(),
-		updated_at=datetime.now()
-	)
+def update_user(name: str, avatar_url: str, info: Info) -> UserType:
+	db = next(get_db())
+	user_id = verify_token(info)
+	user = cu.update_user(db, user_id, name, avatar_url)
+	return UserType.from_instance(user)

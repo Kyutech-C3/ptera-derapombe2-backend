@@ -22,13 +22,14 @@ class Query:
 	sign: SignType = strawberry.field(resolver=rs.get_sign)
 	items: list[ItemType] = strawberry.field(resolver=ri.get_my_items)
 	galleries: list[Gallery] = strawberry.field(resolver=rs.get_my_galleries)
+	leveling: Leveling = strawberry.field(resolver=rl.get_level)
 	# mock
 	map_info: MapInfo = strawberry.field(resolver=rp.get_map_info)
-	leveling: Leveling = strawberry.field(resolver=rl.get_level)
 
 @strawberry.type
 class Mutation:
 	add_user: UserType = strawberry.field(resolver=ru.add_user)
+	update_user: UserType = strawberry.field(resolver=ru.update_user)
 	regist_sign: SignType = strawberry.field(resolver=rs.regist_sign)
 	attach_item: list[ItemType] = strawberry.field(resolver=ri.attach_item)
 	change_item: list[ItemType] = strawberry.field(resolver=ri.change_item)
@@ -38,8 +39,6 @@ class Mutation:
 	capture_sign: SignType = strawberry.field(resolver=rs.capture_sign)
 	exhume_sign: ExhumeResult = strawberry.field(resolver=rs.exhume_sign)
 	connect_signs: MapInfo = strawberry.field(resolver=rp.create_link)
-	# mock
-	update_user: UserType = strawberry.field(resolver=ru.update_user)
 	predict_image: PredictResult = strawberry.field(resolver=pr.predict)
 
 schema = strawberry.Schema(query=Query, mutation=Mutation)
