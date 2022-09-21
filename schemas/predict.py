@@ -5,6 +5,7 @@ import strawberry
 class SuggestResult:
 	score: float
 	sign_type: int
+	sign_name: str
 
 @strawberry.type()
 class PredictResult:

@@ -12,6 +12,9 @@ alpha, beta = 1.5, -50.0
 
 signList = glob.glob("./assets/image/X100-2/*.png")
 
+sign_name_json_open = open('./assets/SignTypeNameCorrespondenceTable.json', 'r')
+sign_name_json_load = json.load(sign_name_json_open)
+
 # 標準標識画像のファイル名から「クラス番号」と「標識名」を得る
 signDict = {}
 for no, fname in enumerate(signList):
@@ -196,7 +199,7 @@ def predict(frame, tmp_path) -> PredictResult:
 						print(f"Recognized  Sign Index {i} = ", signIndex[i], signDict[signIndex[i]], prob[i])
 						print(type(prob[i]))
 						print(type(signDict[signIndex[i]]))
-						scores.append(SuggestResult(score=prob[i], sign_type=int(signIndex[i])))
+						scores.append(SuggestResult(score=prob[i], sign_type=int(signIndex[i]), sign_name=sign_name_json_load[int(signIndex[i])]))
 					result.append(scores)
 				recogSignList.append([signNo, signIndex[0], signDict[signIndex[0]], prob[0]])
 		drawResult(allContours, signRectList, recogSignList, frame, imgThresh, str(tmp_path))
