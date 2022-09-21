@@ -1,5 +1,7 @@
 from datetime import datetime
+from db.models import ItemEffect
 from schemas.general import ColorType
+from schemas.items import ItemType
 from schemas.polygons import MapInfo, PolygonType, PowerRatio, Link, Coordinate
 from schemas.signs import SignType
 from schemas.users import UserType
@@ -25,6 +27,7 @@ def get_map_info() -> MapInfo:
 	return MapInfo(
 		signs=[
 			SignType(
+				link_num=2,
 				id='11111111111',
 				base_sign_types=[1],
 				coordinate=Coordinate(
@@ -46,9 +49,33 @@ def get_map_info() -> MapInfo:
 					updated_at=datetime.now()
 				),
 				created_at=datetime.now(),
-				group=ColorType.RED, hit_point=24, items=[]
+				group=ColorType.RED, hit_point=24,
+				items=[
+					ItemType(
+						id='item34r5tyujytr4',
+						name='耐久アップⅠ',
+						level=1,
+						effect=ItemEffect.ENDURANCE,
+						value=10
+					),
+					ItemType(
+						id='item34r5tyujytr4',
+						name='耐久アップⅠ',
+						level=1,
+						effect=ItemEffect.ENDURANCE,
+						value=10
+					),
+					ItemType(
+						id='item34r5tyujytr4345',
+						name='耐久アップⅡ',
+						level=2,
+						effect=ItemEffect.ENDURANCE,
+						value=30
+					),
+				]
 			),
 			SignType(
+				link_num=2,
 				id='2222222222',
 				base_sign_types=[1],
 				coordinate=Coordinate(
@@ -60,7 +87,29 @@ def get_map_info() -> MapInfo:
 				max_item_slot=6,
 				max_link_slot=2,
 				created_at=datetime.now(),
-				group=ColorType.RED, hit_point=24, items=[],
+				group=ColorType.RED, hit_point=24, items=[
+					ItemType(
+						id='item34r5tyujytr4',
+						name='耐久アップⅠ',
+						level=1,
+						effect=ItemEffect.RESISTANCE,
+						value=10
+					),
+					ItemType(
+						id='item34r52345tyujytr4',
+						name='攻撃耐性Ⅰ',
+						level=1,
+						effect=ItemEffect.RESISTANCE,
+						value=0.9
+					),
+					ItemType(
+						id='234567',
+						name='攻撃耐性Ⅲ',
+						level=3,
+						effect=ItemEffect.RESISTANCE,
+						value=0.75
+					),
+				],
 				owner=UserType(
 					id='12345',
 					name='name',
@@ -73,6 +122,7 @@ def get_map_info() -> MapInfo:
 				),
 			),
 			SignType(
+				link_num=2,
 				id='3333333333333333',
 				base_sign_types=[1],
 				owner=UserType(
@@ -94,9 +144,25 @@ def get_map_info() -> MapInfo:
 				max_item_slot=6,
 				max_link_slot=2,
 				created_at=datetime.now(),
-				group=ColorType.RED, hit_point=24, items=[]
+				group=ColorType.RED, hit_point=24, items=[
+					ItemType(
+						id='item34r52345tyujytr4',
+						name='攻撃耐性Ⅰ',
+						level=1,
+						effect=ItemEffect.RESISTANCE,
+						value=0.9
+					),
+					ItemType(
+						id='234567',
+						name='攻撃耐性Ⅲ',
+						level=3,
+						effect=ItemEffect.RESISTANCE,
+						value=0.75
+					),
+				]
 			),
 			SignType(
+				link_num=0,
 				id='3333333333333344',
 				base_sign_types=[1],
 				coordinate=Coordinate(
@@ -118,7 +184,22 @@ def get_map_info() -> MapInfo:
 				max_item_slot=6,
 				max_link_slot=2,
 				created_at=datetime.now(),
-				group=ColorType.GREEN, hit_point=24, items=[]
+				group=ColorType.GREEN, hit_point=24, items=[
+					ItemType(
+						id='item34r5tyujytr4',
+						name='耐久アップⅠ',
+						level=1,
+						effect=ItemEffect.ENDURANCE,
+						value=10
+					),
+					ItemType(
+						id='item34r5tyujytr4345',
+						name='耐久アップⅡ',
+						level=2,
+						effect=ItemEffect.ENDURANCE,
+						value=30
+					),
+				]
 			),
 		],
 		links=[

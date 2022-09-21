@@ -44,6 +44,7 @@ class SignType(SignInfo):
 	hit_point: int
 	owner: UserType
 	items: list[ItemType]
+	link_num: int
 
 	@classmethod
 	def from_instance(cls, sign_instance: Sign, sign_status_instance: SignStatus = None) -> "SignType":
