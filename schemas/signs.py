@@ -19,7 +19,7 @@ class SignInfo:
 	created_at: datetime
 
 	@classmethod
-	def from_instance(cls, sign_instance: Sign, _: SignStatus = None) -> "SignType":
+	def from_instance(cls, sign_instance: Sign, _: SignStatus = None) -> "SignInfo":
 		return cls(
 			id=sign_instance.id,
 			base_sign_types=[bs.type for bs in sign_instance.base_signs],
@@ -34,13 +34,16 @@ class SignInfo:
 
 @strawberry.type(name="Sign")
 class SignType(SignInfo):
-	group: Optional[ColorType]
-	hit_point: Optional[int]
-	owner: Optional[UserType]
-	items: Optional[list[ItemType]]
+	group: ColorType
+	hit_point: int
+	owner: UserType
+	items: list[ItemType]
 
 	@classmethod
 	def from_instance(cls, sign_instance: Sign, sign_status_instance: SignStatus = None) -> "SignType":
+		owner: UserType = None
+		if sign_status_instance is not None:
+			owner = UserType.from_instance(sign_status_instance.user)
 		return cls(
 			id=sign_instance.id,
 			base_sign_types=[bs.type for bs in sign_instance.base_signs],
@@ -51,9 +54,9 @@ class SignType(SignInfo):
 			max_link_slot=sign_instance.max_link_slot,
 			max_item_slot=sign_instance.max_item_slot,
 			created_at=sign_instance.created_at,
-			group=sign_status_instance.user.group if sign_status_instance is not None else None,
 			hit_point=sign_status_instance.hit_point if sign_status_instance is not None else None,
-			owner=UserType.from_instance(sign_status_instance.user) if sign_status_instance is not None else None,
+			owner=owner,
+			group=owner.group if sign_status_instance is not None else None,
 			items=[ItemType.from_instance(i) for i in sign_status_instance.items] if sign_status_instance is not None else None
 		)
 

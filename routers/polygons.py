@@ -1,7 +1,18 @@
 from datetime import datetime
 from schemas.general import ColorType
-from schemas.polygons import MapInfo, PolygonType, PowerRatio, Segment
+from schemas.polygons import MapInfo, PolygonType, PowerRatio, Link
 from schemas.signs import SignType
+from strawberry.types import Info
+from db.database import get_db
+from routers.utils import verify_token
+from cruds import polygons as cp
+
+def create_link(sign_id: str, other_sign_id: str, info: Info) -> MapInfo:
+	db = next(get_db())
+	user_id = verify_token(info)
+
+	updated_map_info = cp.create_link(db, sign_id, other_sign_id, user_id)
+	return updated_map_info
 
 def get_power_ratio() -> PowerRatio:
 	return PowerRatio(
@@ -19,8 +30,8 @@ def get_map_info() -> MapInfo:
 				latitude=33.654921,
 				image_path='https://s3.ap-northeast-1.wasabisys.com/mastodondb/accounts/avatars/000/000/004/original/ed26601233e5b5cf.png',
 				max_hit_point=100,
-				max_item_slot=8,
-				max_link_slot=12,
+				max_item_slot=6,
+				max_link_slot=2,
 				created_at=datetime.now(),
 				group=ColorType.RED, hit_point=24, items=[]
 			),
@@ -31,8 +42,8 @@ def get_map_info() -> MapInfo:
 				latitude=33.654921,
 				image_path='https://s3.ap-northeast-1.wasabisys.com/mastodondb/accounts/avatars/000/000/004/original/ed26601233e5b5cf.png',
 				max_hit_point=100,
-				max_item_slot=8,
-				max_link_slot=12,
+				max_item_slot=6,
+				max_link_slot=2,
 				created_at=datetime.now(),
 				group=ColorType.RED, hit_point=24, items=[]
 			),
@@ -43,26 +54,26 @@ def get_map_info() -> MapInfo:
 				latitude=33.654921,
 				image_path='https://s3.ap-northeast-1.wasabisys.com/mastodondb/accounts/avatars/000/000/004/original/ed26601233e5b5cf.png',
 				max_hit_point=100,
-				max_item_slot=8,
-				max_link_slot=12,
+				max_item_slot=6,
+				max_link_slot=2,
 				created_at=datetime.now(),
 				group=ColorType.RED, hit_point=24, items=[]
 			),
 		],
-		segments=[
-			Segment(
+		links=[
+			Link(
 				id='444444444',
 				sign_id='11111111111',
 				other_sign_id='2222222222',
 				created_at=datetime.now()
 			),
-			Segment(
+			Link(
 				id='44',
 				sign_id='2222222222',
 				other_sign_id='3333333333333333',
 				created_at=datetime.now()
 			),
-			Segment(
+			Link(
 				id='4444',
 				sign_id='11111111111',
 				other_sign_id='3333333333333333',

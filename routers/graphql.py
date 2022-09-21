@@ -31,10 +31,11 @@ class Mutation:
 	delete_item: list[ItemType] = strawberry.field(resolver=ri.delete_item)
 	attack_sign: UpdateSignData = strawberry.field(resolver=ri.update_sign)
 	heal_sign: UpdateSignData = strawberry.field(resolver=ri.update_sign)
+	capture_sign: SignType = strawberry.field(resolver=rs.capture_sign)
+	exhume_sign: ExhumeResult = strawberry.field(resolver=rs.exhume_sign)
+	connect_signs: MapInfo = strawberry.field(resolver=rp.create_link)
 	# mock
 	update_user: UserType = strawberry.field(resolver=ru.update_user)
-	capture_sign: SignType = strawberry.field(resolver=rs.capture_sign)
-	exhume_sign: list[ExhumeResult] = strawberry.field(resolver=rs.exhume_sign)
 	predict_image: PredictResult = strawberry.field(resolver=rs.predict_image)
 
 schema = strawberry.Schema(query=Query, mutation=Mutation)
