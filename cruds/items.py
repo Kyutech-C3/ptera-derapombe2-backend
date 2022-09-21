@@ -91,7 +91,7 @@ def update_sign(db: Session, sign_id: str, item_id: str, user_id: str) -> Update
 	if item.effect == ItemEffectType.ATTACK:
 		attack = item.value
 		for sign_item in sign.items:
-			if sign_item.effect == ItemEffectType.REGISTANCE:
+			if sign_item.effect == ItemEffectType.RESISTANCE:
 				attack *= sign_item.value
 		changing_sign.hit_point = max(changing_sign.hit_point - attack, 0)
 		if changing_sign.hit_point <= 0:
