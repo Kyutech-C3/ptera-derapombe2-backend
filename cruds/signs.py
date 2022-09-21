@@ -84,7 +84,7 @@ def exhume_sign(db: Session, sign_id: str, user_id: str) -> ExhumeResult:
 	items = db.query(Item).all()
 	exhume_items = random.choices(items, k=random.randint(2, 6))
 
-	user = get_user_by_id(user_id)
+	user = get_user_by_id(db, user_id)
 	user.exp_point += exp_point
 	for exhume_item in exhume_items:
 		db.add(HavingItem(
