@@ -97,6 +97,7 @@ class GallerySign(Base):
     sign_id = Column(String, ForeignKey('signs.id', onupdate='CASCADE', ondelete='CASCADE'))
     user_id = Column(String, ForeignKey('users.id', onupdate='CASCADE', ondelete='CASCADE'))
     created_at = Column(DateTime, default=datetime.now)
+    sign = relationship("Sign")
 
 @dataclasses.dataclass
 class HavingItem(Base):

@@ -26,25 +26,11 @@ def get_sign(sign_id: str, info: Info) -> SignType:
 	sign = cs.get_sign_by_id(db, sign_id)
 	return sign
 
-def get_my_galleries() -> list[Gallery]:
-	return [
-		Gallery(
-			base_sign_type=23,
-			sign=[
-				SignInfo(
-					id='hoge',
-					base_sign_types=[1, 23],
-					longitude=130.671892,
-					latitude=33.654921,
-					image_path='https://s3.ap-northeast-1.wasabisys.com/mastodondb/accounts/avatars/000/000/004/original/ed26601233e5b5cf.png',
-					max_hit_point=100,
-					max_item_slot=8,
-					max_link_slot=12,
-					created_at=datetime.now()
-				)
-			]
-		)
-	]
+def get_my_galleries(info: Info) -> list[Gallery]:
+	db = next(get_db())
+	user_id = verify_token(info)
+	my_galleries = cs.get_user_galleries(db, user_id)
+	return my_galleries
 
 def capture_sign(sign_id: str) -> SignType:
 	return SignType(
