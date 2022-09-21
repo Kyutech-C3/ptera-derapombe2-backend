@@ -118,7 +118,7 @@ def get_map_info() -> MapInfo:
 				max_item_slot=6,
 				max_link_slot=2,
 				created_at=datetime.now(),
-				group=ColorType.RED, hit_point=24, items=[]
+				group=ColorType.GREEN, hit_point=24, items=[]
 			),
 		],
 		links=[
