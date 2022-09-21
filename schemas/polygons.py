@@ -9,7 +9,7 @@ class Link:
 	polygon_id: str
 	sign_id: str
 	other_sign_id: str
-	one_coordinate: SignType
+	one_coordinate: Coordinate
 	other_coordinate: Coordinate
 	created_at: datetime
 
