@@ -7,11 +7,15 @@ from schemas.items import ItemType
 from schemas.users import UserType
 
 @strawberry.type()
+class Coordinate:
+	longitude: float
+	latitude: float
+
+@strawberry.type()
 class SignInfo:
 	id: str
 	base_sign_types: list[int]
-	longitude: float
-	latitude: float
+	coordinate: Coordinate
 	image_path: str
 	max_hit_point: int
 	max_link_slot: int
@@ -23,8 +27,10 @@ class SignInfo:
 		return cls(
 			id=sign_instance.id,
 			base_sign_types=[bs.type for bs in sign_instance.base_signs],
-			longitude=sign_instance.longitude,
-			latitude=sign_instance.latitude,
+			coordinate=Coordinate(
+				longitude=sign_instance.longitude,
+				latitude=sign_instance.latitude,
+			),
 			image_path=sign_instance.image_path,
 			max_hit_point=sign_instance.max_hit_point,
 			max_link_slot=sign_instance.max_link_slot,
@@ -47,8 +53,10 @@ class SignType(SignInfo):
 		return cls(
 			id=sign_instance.id,
 			base_sign_types=[bs.type for bs in sign_instance.base_signs],
-			longitude=sign_instance.longitude,
-			latitude=sign_instance.latitude,
+			coordinate=Coordinate(
+				longitude=sign_instance.longitude,
+				latitude=sign_instance.latitude,
+			),
 			image_path=sign_instance.image_path,
 			max_hit_point=sign_instance.max_hit_point,
 			max_link_slot=sign_instance.max_link_slot,
