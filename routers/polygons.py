@@ -3,12 +3,16 @@ from schemas.general import ColorType
 from schemas.polygons import MapInfo, PolygonType, PowerRatio, Segment
 from schemas.signs import SignType
 from schemas.users import UserType
+from cruds import polygons as cp
+from strawberry.types import Info
+from db.database import get_db
+from routers.utils import verify_token
 
-def get_power_ratio() -> PowerRatio:
-	return PowerRatio(
-		red=65.4,
-		green=34.6
-	)
+def get_power_ratio(info: Info) -> PowerRatio:
+	db = next(get_db())
+	verify_token(info)
+	ratio = cp.calc_power_ratio(db)
+	return ratio
 
 def get_map_info() -> MapInfo:
 	return MapInfo(

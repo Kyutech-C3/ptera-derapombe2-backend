@@ -16,11 +16,11 @@ from routers import (
 @strawberry.type
 class Query:
 	user: UserType = strawberry.field(resolver=ru.get_me)
-	# mock
 	power_ratio: PowerRatio = strawberry.field(resolver=rp.get_power_ratio)
 	sign: SignType = strawberry.field(resolver=rs.get_sign)
 	items: list[ItemType] = strawberry.field(resolver=ri.get_my_items)
 	galleries: list[Gallery] = strawberry.field(resolver=rs.get_my_galleries)
+	# mock
 	map_info: MapInfo = strawberry.field(resolver=rp.get_map_info)
 
 @strawberry.type

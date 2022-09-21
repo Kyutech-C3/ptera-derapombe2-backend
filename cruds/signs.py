@@ -50,3 +50,5 @@ def get_sign_by_id(db: Session, sign_id: str) -> SignType:
 		raise Exception('sign is not found')
 	sign_status = db.query(SignStatus).get(sign_id)
 	return SignType.from_instance(sign, sign_status)
+
+
