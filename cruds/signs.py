@@ -1,7 +1,7 @@
 from typing import Dict
 from sqlalchemy.orm.session import Session
 from cruds.users import get_user_by_id
-from db.models import BaseSign, BelongSign, GallerySign, Item, Sign, SignStatus
+from db.models import BaseSign, BelongSign, GallerySign, HavingItem, Item, Sign, SignStatus, User
 from schemas.items import ItemType
 from schemas.signs import Gallery, SignInfo, ExhumeResult, SignType
 import random
@@ -79,10 +79,19 @@ def capture_sign(db: Session, sign_id: str, user_id: str) -> SignType:
 	registed_sign = SignType.from_instance(sign, sign_status)
 	return registed_sign
 
-def exhume_sign(db: Session) -> ExhumeResult:
+def exhume_sign(db: Session, sign_id: str, user_id: str) -> ExhumeResult:
 	exp_point = 100
 	items = db.query(Item).all()
 	exhume_items = random.choices(items, k=random.randint(2, 6))
+
+	user = get_user_by_id(user_id)
+	user.exp_point += exp_point
+	for exhume_item in exhume_items:
+		db.add(HavingItem(
+			item_id=exhume_item.id,
+			user_id=user_id
+		))
+	db.commit()
 
 	return ExhumeResult(
 		items=[ItemType.from_instance(exhume_item) for exhume_item in exhume_items],
