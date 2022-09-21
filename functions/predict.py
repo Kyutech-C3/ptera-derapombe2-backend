@@ -136,10 +136,10 @@ def recognizeSign(imgAI):
 
 def drawResult(allContours, signRectList, recogSignList, imgColor, imgThresh, file_path):
 	print("drawResult")
-	folder_name = file_path.split('/')[-1].split('.')[0]
-	print(folder_name)
-	os.mkdir(f'./assets/image/predicted/{folder_name}')
-	cv2.imwrite(f'./assets/image/predicted/{folder_name}/origin.jpg', imgColor)
+	# folder_name = file_path.split('/')[-1].split('.')[0]
+	# print(folder_name)
+	# os.mkdir(f'./assets/image/predicted/{folder_name}')
+	# cv2.imwrite(f'./assets/image/predicted/{folder_name}/origin.jpg', imgColor)
 	rgbIm = imgThresh.copy()
 	imgThreshColor = cv2.merge((rgbIm, rgbIm, rgbIm))    # 二値化画像をRGBに
 	imgThreshColor = cv2.drawContours(imgThreshColor, allContours, -1, (0, 255, 0), 1)    # 全ての輪郭を「グリーン」で描画
@@ -153,8 +153,8 @@ def drawResult(allContours, signRectList, recogSignList, imgColor, imgThresh, fi
 		cv2.putText(imgColor, signNoName, pttxt, font, 0.5, (255, 116, 0), 1, cv2.LINE_AA, False)    # クラス番号と認識標識名を表示
 		cv2.rectangle(imgColor, pt1, pt2, (255, 255, 0), 2)    # 検出サイン外形矩形をブルーで囲む
 		cv2.rectangle(imgThreshColor, pt1, pt2, (255, 255, 0), 2)    # 検出サイン外形矩形をブルーで囲む
-	cv2.imwrite(f'./assets/image/predicted/{folder_name}/predict_result.jpg', imgColor)
-	cv2.imwrite(f'./assets/image/predicted/{folder_name}/thresh_result.jpg', imgThreshColor)
+	# cv2.imwrite(f'./assets/image/predicted/{folder_name}/predict_result.jpg', imgColor)
+	# cv2.imwrite(f'./assets/image/predicted/{folder_name}/thresh_result.jpg', imgThreshColor)
 
 def contCheck(contNo, cont):
 	print("contCheck")
@@ -186,9 +186,9 @@ def predict(frame, tmp_path) -> PredictResult:
 				statOK, imgAI, origin = makeAImgColor(frame, [pt1, pt2])    # 認識する50x50のカラー画像に加工(imgAI)
 				if statOK:
 					print("OK")
-					folder_name = str(tmp_path).split('/')[-1].split('.')[0]
-					# print(f'./assets/image/predicted/{folder_name}/input_img_.jpg')
-					cv2.imwrite(f'./assets/image/predicted/input_img_{signNo}.jpg', origin)
+					# folder_name = str(tmp_path).split('/')[-1].split('.')[0]
+					# # print(f'./assets/image/predicted/{folder_name}/input_img_.jpg')
+					# cv2.imwrite(f'./assets/image/predicted/input_img_{signNo}.jpg', origin)
 					signIndex, prob = recognizeSign(imgAI)
 # signIndex:認識した標識index, prob:確率
 					scores = []
