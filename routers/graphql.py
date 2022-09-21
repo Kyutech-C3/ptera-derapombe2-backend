@@ -22,7 +22,7 @@ class Query:
 	sign: SignType = strawberry.field(resolver=rs.get_sign)
 	items: list[ItemType] = strawberry.field(resolver=ri.get_my_items)
 	galleries: list[Gallery] = strawberry.field(resolver=rs.get_my_galleries)
-	leveling: Leveling = strawberry.field(resolver=rl.get_level)
+	required_exp: list[int] = strawberry.field(resolver=rl.get_requied_exp_point)
 	map_info: MapInfo = strawberry.field(resolver=rp.get_map_info)
 
 @strawberry.type
