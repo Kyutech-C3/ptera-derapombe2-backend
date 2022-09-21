@@ -10,6 +10,7 @@ class UserType:
 	group: ColorType
 	exp_point: int
 	level: int
+	avatar_url: str
 	created_at: datetime
 	updated_at: datetime
 
