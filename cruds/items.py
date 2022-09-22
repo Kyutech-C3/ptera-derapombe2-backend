@@ -111,7 +111,7 @@ def update_sign(db: Session, sign_id: str, item_id: str, user_id: str) -> Update
 
 	return UpdateSignData(
 		exp_point=30,
-		hit_point_diff=hit_point_diff,
+		hit_point_diff=abs(hit_point_diff),
 		sign=get_sign_by_id(db, sign_id)
 	)
 
