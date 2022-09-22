@@ -64,7 +64,7 @@ class SignStatus(Base):
     hit_point = Column(Integer)
     created_at = Column(DateTime, default=datetime.now)
     updated_at = Column(DateTime, default=datetime.now)
-    items = relationship("UsingItem")
+    items = relationship("Item", secondary="using_signs")
     user = relationship("User")
 
 @dataclasses.dataclass
