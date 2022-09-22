@@ -82,13 +82,13 @@ def update_sign(db: Session, sign_id: str, item_id: str, user_id: str) -> Update
 	item = db.query(HavingItem).filter(HavingItem.item_id == item_id, HavingItem.user_id == user_id).first()
 	if item is None:
 		raise Exception('having_item is not found')
-	if item.effect not in [ItemEffect.ATTACK, ItemEffect.HEAL]:
+	if item.item.effect not in [ItemEffect.ATTACK, ItemEffect.HEAL]:
 		raise Exception('item effect is invalid')
 	db.delete(item)
 	changing_sign = db.query(SignStatus).get(sign_id)
 	hit_point_diff = -sign.hit_point
 
-	if item.effect == ItemEffectType.ATTACK:
+	if item.item.effect == ItemEffectType.ATTACK:
 		attack = item.value
 		for sign_item in sign.items:
 			if sign_item.effect == ItemEffectType.RESISTANCE:
@@ -97,7 +97,7 @@ def update_sign(db: Session, sign_id: str, item_id: str, user_id: str) -> Update
 		if changing_sign.hit_point <= 0:
 			db.delete(changing_sign)
 
-	elif item.effect == ItemEffectType.HEAL:
+	elif item.item.effect == ItemEffectType.HEAL:
 		max_hp = sign.max_hit_point
 		for sign_item in sign.items:
 			if sign_item.effect == ItemEffectType.ENDURANCE:
