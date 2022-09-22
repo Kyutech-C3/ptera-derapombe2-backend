@@ -86,6 +86,8 @@ def update_sign(db: Session, sign_id: str, item_id: str, user_id: str) -> Update
 		raise Exception('item effect is invalid')
 	db.delete(item)
 	changing_sign = db.query(SignStatus).get(sign_id)
+	if changing_sign is None:
+		raise Exception('this sign is neutral')
 	hit_point_diff = -sign.hit_point
 
 	if item.item.effect == ItemEffectType.ATTACK:
