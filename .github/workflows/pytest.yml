@@ -41,6 +41,7 @@ jobs:
           envkey_POSTGRES_USER: postgres
           envkey_POSTGRES_PASSWORD: ${{ secrets.POSTGRES_PASSWORD }}
           envkey_POSTGRES_HOST: localhost
+          envkey_POSTGRES_DB: sign_gress_test
 
       - name: Up postgres docker container
         run: docker-compose up -d db
