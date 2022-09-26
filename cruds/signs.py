@@ -1,9 +1,9 @@
 from typing import Dict
 from sqlalchemy.orm.session import Session
 from cruds.users import get_user_by_id
-from db.models import BaseSign, BelongSign, GallerySign, HavingItem, Item, Level, Sign, SignStatus, User
+from db.models import BaseSign, BelongSign, GallerySign, HavingItem, Item, Level, Sign, SignStatus
 from schemas.items import ItemType
-from schemas.signs import Gallery, NearlySign, SignInfo, ExhumeResult, SignType
+from schemas.signs import BaseSignType, Gallery, NearlySign, SignInfo, ExhumeResult, SignType
 import random
 from geopy.distance import geodesic
 
@@ -111,17 +111,23 @@ def get_user_galleries(db: Session, user_id: str) -> list[Gallery]:
 	for gallery in gallery_signs:
 		for base_sign in gallery.sign.base_signs:
 			if temp_dict.get(str(base_sign.type)) is None:
-				temp_dict[str(base_sign.type)] = [SignInfo.from_instance(gallery.sign)]
+				temp_dict[str(base_sign.type)] = [
+					{
+						'base_sign': BaseSignType.from_instance(base_sign),
+						'sign': SignInfo.from_instance(gallery.sign)
+					}
+				]
 			else:
-				temp_dict[str(base_sign.type)].append(SignInfo.from_instance(gallery.sign))
+				temp_dict[str(base_sign.type)].append({
+					'base_sign': BaseSignType.from_instance(base_sign),
+					'sign': SignInfo.from_instance(gallery.sign)
+				})
 
-	signs_list = list(temp_dict.values())
 	galleries = []
-	for i, key in enumerate(list(temp_dict.keys())):
-		print(signs_list)
+	for i, val in enumerate(list(temp_dict.values())):
 		galleries.append(Gallery(
-			base_sign_type=int(key),
-			sign=signs_list[i]
+			base_sign=val[i]['base_sign'],
+			sign=val[i]['sign']
 		))
 
 	return galleries
